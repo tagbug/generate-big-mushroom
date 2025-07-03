@@ -1,0 +1,24 @@
+
+{
+  "translation": {
+    "title": "Generate Big Mushroom",
+    "score": "Score",
+    "next": "Next",
+    "gameOver": "Game Over",
+    "yourScore": "Your Score: {{score}}",
+    "restart": "Restart",
+    "fruits": {
+      "cherry": "Cherry",
+      "strawberry": "Strawberry",
+      "grape": "Grape",
+      "dekopon": "Dekopon",
+      "persimmon": "Persimmon",
+      "apple": "Apple",
+      "pear": "Pear",
+      "peach": "Peach",
+      "pineapple": "Pineapple",
+      "melon": "Melon",
+      "watermelon": "Watermelon"
+    }
+  }
+}

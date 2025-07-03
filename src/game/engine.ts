@@ -1,0 +1,34 @@
+import Matter from 'matter-js';
+
+const { Engine, Render, World, Bodies, Runner } = Matter;
+
+export const engine = Engine.create();
+export const world = engine.world;
+
+export const createRenderer = (element: HTMLElement) => {
+  return Render.create({
+    element,
+    engine,
+    options: {
+      width: 400,
+      height: 600,
+      wireframes: false,
+      background: '#F7F4C8',
+    },
+  });
+};
+
+export const createBoundaries = (width: number, height: number) => {
+  const ground = Bodies.rectangle(width / 2, height, width, 20, { isStatic: true, render: { fillStyle: '#E6B143' } });
+  const leftWall = Bodies.rectangle(0, height / 2, 20, height, { isStatic: true, render: { fillStyle: '#E6B143' } });
+  const rightWall = Bodies.rectangle(width, height / 2, 20, height, { isStatic: true, render: { fillStyle: '#E6B143' } });
+  World.add(world, [ground, leftWall, rightWall]);
+};
+
+export const runEngine = (runner: Matter.Runner) => {
+  Runner.run(runner, engine);
+};
+
+export const runRender = (render: Matter.Render) => {
+  Render.run(render);
+};

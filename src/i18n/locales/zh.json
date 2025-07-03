@@ -1,0 +1,24 @@
+
+{
+  "translation": {
+    "title": "合成大西瓜",
+    "score": "分数",
+    "next": "下一个",
+    "gameOver": "游戏结束",
+    "yourScore": "你的分数: {{score}}",
+    "restart": "重新开始",
+    "fruits": {
+      "cherry": "樱桃",
+      "strawberry": "草莓",
+      "grape": "葡萄",
+      "dekopon": "凸顶柑",
+      "persimmon": "柿子",
+      "apple": "苹果",
+      "pear": "梨",
+      "peach": "桃子",
+      "pineapple": "菠萝",
+      "melon": "蜜瓜",
+      "watermelon": "西瓜"
+    }
+  }
+}
