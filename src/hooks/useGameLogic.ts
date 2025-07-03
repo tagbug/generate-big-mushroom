@@ -37,6 +37,7 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
       plugin: {
         fruit,
         isActivated: false, // Fruit is not active until it collides
+        creationTime: Date.now(),
       },
     });
 
@@ -81,6 +82,7 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
                 plugin: {
                   fruit: nextFruitInLine,
                   isActivated: true, // The new fruit is already activated
+                  creationTime: Date.now(),
                 },
               }
             );
@@ -96,7 +98,7 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
 
       world.bodies.forEach(body => {
         const plugin = body.plugin as any;
-        if (plugin && plugin.fruit && plugin.isActivated && body.position.y < GAME_OVER_LINE_Y && !body.isStatic && body.speed < 0.1 && body.angularSpeed < 0.1) {
+        if (plugin && plugin.fruit && plugin.isActivated && (Date.now() - plugin.creationTime > 1500) && body.position.y < GAME_OVER_LINE_Y && !body.isStatic && body.speed < 0.1 && body.angularSpeed < 0.1) {
           setIsGameOver(true);
         }
       });
