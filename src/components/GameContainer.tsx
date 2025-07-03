@@ -13,7 +13,7 @@ const GameContainer = () => {
   const renderRef = useRef<Matter.Render | null>(null);
   const runnerRef = useRef<Matter.Runner | null>(null);
 
-  const { score, isGameOver, addFruit, nextFruit, resetGame } = useGameLogic(sceneRef);
+  const { score, isGameOver, addFruit, nextFruit, resetGame, showGhostFruit, hideGhostFruit, updateGhostFruitPosition } = useGameLogic(sceneRef);
 
   useEffect(() => {
     if (sceneRef.current && !renderRef.current) {
@@ -53,6 +53,14 @@ const GameContainer = () => {
     }
   }, [addFruit]);
 
+  const handleMouseMove = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
+    if (sceneRef.current) {
+      const rect = sceneRef.current.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      updateGhostFruitPosition(x);
+    }
+  }, [updateGhostFruitPosition]);
+
   const handleRestart = useCallback(() => {
     resetGame();
   }, [resetGame]);
@@ -65,8 +73,11 @@ const GameContainer = () => {
       </div>
       <div
         ref={sceneRef}
-        className="w-[400px] h-[600px] mx-auto border cursor-pointer bg-[#F7F4C8] relative" // Added relative positioning
+        className="w-[400px] h-[600px] mx-auto border cursor-pointer bg-[#F7F4C8] relative"
         onClick={handleClick}
+        onMouseEnter={showGhostFruit}
+        onMouseLeave={hideGhostFruit}
+        onMouseMove={handleMouseMove}
       >
         {/* Game Over Line */}
         <div 

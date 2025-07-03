@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Matter from 'matter-js';
 import { FRUITS } from '@/game/fruits';
 import { engine, world } from '@/game/engine';
@@ -9,19 +9,60 @@ import { Fruit } from '@/types/fruits';
 
 const GAME_OVER_LINE_Y = 80;
 
+// Helper to convert hex color to rgba
+const hexToRgba = (hex: string, alpha: number) => {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+};
+
 export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) => {
   const [score, setScore] = useState(0);
   const [isGameOver, setIsGameOver] = useState(false);
   const [nextFruit, setNextFruit] = useState<Fruit>(FRUITS[0]);
+  const ghostFruitBodyRef = useRef<Matter.Body | null>(null);
+
+  const showGhostFruit = useCallback(() => {
+    if (ghostFruitBodyRef.current) {
+      Matter.World.remove(world, ghostFruitBodyRef.current);
+    }
+
+    const fruit = nextFruit;
+    const ghostBody = Matter.Bodies.circle(0, 50, fruit.radius, {
+      isStatic: true,
+      isSensor: true,
+      label: 'ghost',
+      render: {
+        fillStyle: hexToRgba(fruit.color, 0.3),
+        strokeStyle: hexToRgba(fruit.color, 0.8),
+        lineWidth: 2,
+      },
+    });
+    ghostFruitBodyRef.current = ghostBody;
+    Matter.World.add(world, ghostBody);
+  }, [nextFruit]);
+
+  const hideGhostFruit = useCallback(() => {
+    if (ghostFruitBodyRef.current) {
+      Matter.World.remove(world, ghostFruitBodyRef.current);
+      ghostFruitBodyRef.current = null;
+    }
+  }, []);
+
+  const updateGhostFruitPosition = useCallback((x: number) => {
+    if (ghostFruitBodyRef.current) {
+      Matter.Body.setPosition(ghostFruitBodyRef.current, { x, y: 50 });
+    }
+  }, []);
 
   const resetGame = useCallback(() => {
     setIsGameOver(false);
     setScore(0);
     setNextFruit(FRUITS[0]);
-    // Remove all non-static bodies (the fruits)
     const fruitsToRemove = world.bodies.filter(body => !body.isStatic);
     Matter.World.remove(world, fruitsToRemove);
-  }, [world]);
+  }, []);
 
   const addFruit = useCallback((x: number) => {
     if (isGameOver) return;
@@ -36,7 +77,7 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
       },
       plugin: {
         fruit,
-        isActivated: false, // Fruit is not active until it collides
+        isActivated: false,
         creationTime: Date.now(),
       },
     });
@@ -46,13 +87,18 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
   }, [nextFruit, isGameOver]);
 
   useEffect(() => {
+    if (ghostFruitBodyRef.current) {
+      showGhostFruit();
+    }
+  }, [nextFruit, showGhostFruit]);
+
+  useEffect(() => {
     const handleCollision = (event: Matter.IEventCollision<Matter.Engine>) => {
       if (isGameOver) return;
 
       event.pairs.forEach((pair) => {
         const { bodyA, bodyB } = pair;
 
-        // Activate both fruits on collision
         if (bodyA.plugin && (bodyA.plugin as any).fruit) {
           (bodyA.plugin as any).isActivated = true;
         }
@@ -81,7 +127,7 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
                 },
                 plugin: {
                   fruit: nextFruitInLine,
-                  isActivated: true, // The new fruit is already activated
+                  isActivated: true,
                   creationTime: Date.now(),
                 },
               }
@@ -113,5 +159,5 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
     };
   }, [isGameOver]);
 
-  return { score, isGameOver, addFruit, nextFruit, resetGame };
+  return { score, isGameOver, addFruit, nextFruit, resetGame, showGhostFruit, hideGhostFruit, updateGhostFruitPosition };
 };
