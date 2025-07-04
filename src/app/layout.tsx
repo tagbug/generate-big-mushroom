@@ -19,13 +19,13 @@ export const metadata: Metadata = {
   openGraph: {
     title: '合成大蘑菇',
     description: '合成大蘑菇',
-    url: 'https://generate-big-mushroom.vercel.com/',
+    url: 'https://generate-big-mushroom.vercel.app/',
     siteName: '合成大蘑菇',
     locale: 'zh_CN',
     type: 'website',
     images: [
       {
-        url: 'https://generate-big-mushroom.vercel.com/icon.png',
+        url: 'https://generate-big-mushroom.vercel.app/icon.png',
         width: 512,
         height: 512,
       },
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: '合成大蘑菇',
     description: '合成大蘑菇',
-    images: ['https://generate-big-mushroom.vercel.com/icon.png'],
+    images: ['https://generate-big-mushroom.vercel.app/icon.png'],
   },
 };
 
