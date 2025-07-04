@@ -7,16 +7,15 @@ export const MUSHROOM_SKIN: SkinConfig = {
   description: 'Merge big mushrooms!', // 这将被 i18n 替换
   type: 'emoji',
   items: [
-    // 🍬🍪🍩🍤🍥🏳️‍🌈🏳️‍⚧️🍄‍🟫🍄
     { label: 'candy', radius: 10, score: 1, emoji: '🍬' },
     { label: 'cookie', radius: 15, score: 2, emoji: '🍪' },
     { label: 'donut', radius: 20, score: 3, emoji: '🍩' },
     { label: 'shrimp', radius: 25, score: 4, emoji: '🍤' },
-    { label: 'fish_cake', radius: 35, score: 5, emoji: '🍥' },
-    { label: 'pride_flag', radius: 45, score: 6, emoji: '🏳️‍🌈' },
-    { label: 'trans_flag', radius: 55, score: 7, emoji: '🏳️‍⚧️' },
-    { label: 'brown_mushroom', radius: 65, score: 8, emoji: '🍄‍🟫' },
-    { label: 'red_mushroom', radius: 100, score: 9, emoji: '🍄' },
+    { label: 'fish_cake', radius: 30, score: 5, emoji: '🍥' },
+    { label: 'pride_flag', radius: 35, score: 6, emoji: '🏳️‍🌈' },
+    { label: 'trans_flag', radius: 40, score: 7, emoji: '🏳️‍⚧️' },
+    { label: 'brown_mushroom', radius: 50, score: 9, emoji: '🍄‍🟫' },
+    { label: 'red_mushroom', radius: 60, score: 11, emoji: '🍄' },
   ].map(item => ({ ...item, color: "#FFFFFF" })),
 };
 

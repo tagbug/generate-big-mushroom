@@ -46,7 +46,7 @@
       },
       {
         "id": "emoji",
-        "name": "Emoji 表情",
+        "name": "Emoji",
         "desc": "合成大表情！",
         "items": [
           { "label": "smile", "name": "微笑" },
@@ -64,7 +64,7 @@
       },
       {
         "id": "geometric",
-        "name": "几何形状",
+        "name": "几何",
         "desc": "简约的几何图形",
         "items": [
           { "label": "dot", "name": "点" },
