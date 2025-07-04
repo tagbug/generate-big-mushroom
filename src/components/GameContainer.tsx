@@ -119,6 +119,7 @@ const GameContainer = () => {
   }, [updateGhostFruitPosition, scale]);
 
   const handleTouchEnd = useCallback((event: React.TouchEvent<HTMLDivElement>) => {
+    event.preventDefault();
     const x = getEventX(event, { useChangedTouches: true });
     addFruit(x);
     hideGhostFruit();
@@ -136,7 +137,7 @@ const GameContainer = () => {
           <Scoreboard score={score} />
         </div>
         <div className="flex flex-row sm:flex-row items-center gap-2 sm:gap-4">
-          <NextPreview fruit={nextFruit} />
+          <NextPreview fruits={nextFruit} />
           <div className="relative z-40"> {/* 确保皮肤选择器在最上层 */}
             <SkinSelector />
           </div>
@@ -145,21 +146,23 @@ const GameContainer = () => {
       
       {/* Game canvas container - 使用flex布局优化大屏幕显示 */}
       <div
-        className="relative w-fit bg-gradient-to-b from-white/90 to-white/80 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/20 overflow-hidden"
+        className="relative w-fit bg-gradient-to-b from-white/90 to-white/80 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/20 overflow-hidden touch-none"
         style={{
           transform: `scale(${scale})`,
           transformOrigin: 'top center',
+          touchAction: 'none' // 防止触摸手势导致的页面滚动
         }}
       >
         {/* 在大屏幕下使用flex布局，小屏幕下保持原有布局 */}
         <div className="flex justify-center items-center p-4 md:p-8">
           <div
             ref={sceneRef}
-            className="w-[400px] h-[600px] cursor-pointer relative transition-transform duration-300"
+            className="w-[400px] h-[600px] cursor-pointer relative transition-transform duration-300 touch-none"
             style={{ 
-              background: 'linear-gradient(135deg, #fef3c7 0%, #fde68a 50%, #f59e0b 100%)',
+              background: 'transparent',
               borderRadius: '12px',
-              boxShadow: '0 10px 25px rgba(0,0,0,0.1)'
+              boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
+              touchAction: 'none' // 防止触摸手势导致的页面滚动
             }}
             onClick={handleClick}
             onMouseEnter={handleMouseEnter}
@@ -178,10 +181,10 @@ const GameContainer = () => {
             />
             
             {/* Corner decorations */}
-            <div className="absolute top-2 left-2 w-4 h-4 bg-white/30 rounded-full"></div>
+            {/* <div className="absolute top-2 left-2 w-4 h-4 bg-white/30 rounded-full"></div>
             <div className="absolute top-2 right-2 w-4 h-4 bg-white/30 rounded-full"></div>
             <div className="absolute bottom-2 left-2 w-4 h-4 bg-white/30 rounded-full"></div>
-            <div className="absolute bottom-2 right-2 w-4 h-4 bg-white/30 rounded-full"></div>
+            <div className="absolute bottom-2 right-2 w-4 h-4 bg-white/30 rounded-full"></div> */}
           </div>
         </div>
         

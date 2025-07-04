@@ -11,6 +11,22 @@
     "selectSkin": "Select Skin",
     "skins": [
       {
+        "id": "mushroom",
+        "name": "Mushrooms",
+        "desc": "Merge big mushrooms!",
+        "items": [
+          { "label": "candy", "name": "Candy" },
+          { "label": "cookie", "name": "Cookie" },
+          { "label": "donut", "name": "Donut" },
+          { "label": "shrimp", "name": "Shrimp" },
+          { "label": "fish_cake", "name": "Fish Cake" },
+          { "label": "pride_flag", "name": "Pride Flag" },
+          { "label": "trans_flag", "name": "Trans Flag" },
+          { "label": "brown_mushroom", "name": "Brown Mushroom" },
+          { "label": "red_mushroom", "name": "Red Mushroom" }
+        ]
+      },
+      {
         "id": "classic-fruits",
         "name": "Classic Fruits",
         "desc": "Traditional fruit merging game",

@@ -23,7 +23,9 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
   const { currentSkin } = useSkin();
   const [score, setScore] = useState(0);
   const [isGameOver, setIsGameOver] = useState(false);
-  const [nextFruit, setNextFruit] = useState<Fruit>(currentSkin.items[0]);
+  // 存放两个接下来的水果
+  const availableFruits = currentSkin.items.slice(0, 5);
+  const [nextFruit, setNextFruit] = useState<Fruit[]>([availableFruits[Math.floor(Math.random() * availableFruits.length)], availableFruits[Math.floor(Math.random() * availableFruits.length)]]);
   const ghostFruitBodyRef = useRef<Matter.Body | null>(null);
 
   const showGhostFruit = useCallback((x?: number) => {
@@ -31,7 +33,7 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
       Matter.World.remove(world, ghostFruitBodyRef.current);
     }
 
-    const fruit = nextFruit;
+    const fruit = nextFruit[0];
     let ghostBody: Matter.Body;
     
     // 根据皮肤类型创建不同的幽灵物体
@@ -117,7 +119,7 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
   const resetGame = useCallback(() => {
     setIsGameOver(false);
     setScore(0);
-    setNextFruit(currentSkin.items[0]);
+    setNextFruit([availableFruits[Math.floor(Math.random() * availableFruits.length)], availableFruits[Math.floor(Math.random() * availableFruits.length)]]);
     const fruitsToRemove = world.bodies.filter(body => !body.isStatic);
     Matter.World.remove(world, fruitsToRemove);
   }, [currentSkin]);
@@ -125,7 +127,7 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
   const addFruit = useCallback((x: number) => {
     if (isGameOver) return;
 
-    const fruit = nextFruit;
+    const fruit = nextFruit[0];
     const body = createPhysicsBody(x, 50, fruit, currentSkin.type);
     Matter.World.add(world, body);
     
@@ -133,8 +135,7 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
     audioManager.play('drop');
     
     // 随机选择前5个水果中的一个作为下一个水果
-    const availableFruits = currentSkin.items.slice(0, 5);
-    setNextFruit(availableFruits[Math.floor(Math.random() * availableFruits.length)]);
+    setNextFruit(prev => [prev[1], availableFruits[Math.floor(Math.random() * availableFruits.length)]]);
   }, [nextFruit, isGameOver, currentSkin]);
 
   // 当皮肤改变时重置游戏

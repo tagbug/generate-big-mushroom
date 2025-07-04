@@ -11,8 +11,24 @@
     "selectSkin": "选择皮肤",
     "skins": [
       {
+        "id": "mushroom",
+        "name": "蘑菇",
+        "desc": "合成大蘑菇！",
+        "items": [
+          { "label": "candy", "name": "糖果" },
+          { "label": "cookie", "name": "饼干" },
+          { "label": "donut", "name": "甜甜圈" },
+          { "label": "shrimp", "name": "天妇罗" },
+          { "label": "fish_cake", "name": "鱼板" },
+          { "label": "pride_flag", "name": "彩虹" },
+          { "label": "trans_flag", "name": "跨子" },
+          { "label": "brown_mushroom", "name": "小蘑菇" },
+          { "label": "red_mushroom", "name": "大蘑菇" }
+        ]
+      },
+      {
         "id": "classic-fruits",
-        "name": "经典水果",
+        "name": "水果",
         "desc": "传统的水果合成游戏",
         "items": [
           { "label": "cherry", "name": "樱桃" },

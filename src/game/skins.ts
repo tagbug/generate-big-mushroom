@@ -1,7 +1,27 @@
 import { SkinConfig } from '@/types/skins';
 
-// 经典水果皮肤
-export const CLASSIC_FRUITS_SKIN: SkinConfig = {
+// 合成大蘑菇！
+export const MUSHROOM_SKIN: SkinConfig = {
+  id: 'mushroom',
+  name: 'Mushroom Mania', // 这将被 i18n 替换
+  description: 'Merge big mushrooms!', // 这将被 i18n 替换
+  type: 'emoji',
+  items: [
+    // 🍬🍪🍩🍤🍥🏳️‍🌈🏳️‍⚧️🍄‍🟫🍄
+    { label: 'candy', radius: 10, score: 1, emoji: '🍬' },
+    { label: 'cookie', radius: 15, score: 2, emoji: '🍪' },
+    { label: 'donut', radius: 20, score: 3, emoji: '🍩' },
+    { label: 'shrimp', radius: 25, score: 4, emoji: '🍤' },
+    { label: 'fish_cake', radius: 35, score: 5, emoji: '🍥' },
+    { label: 'pride_flag', radius: 45, score: 6, emoji: '🏳️‍🌈' },
+    { label: 'trans_flag', radius: 55, score: 7, emoji: '🏳️‍⚧️' },
+    { label: 'brown_mushroom', radius: 65, score: 8, emoji: '🍄‍🟫' },
+    { label: 'red_mushroom', radius: 100, score: 9, emoji: '🍄' },
+  ].map(item => ({ ...item, color: "#FFFFFF" })),
+};
+
+// 水果皮肤
+export const FRUITS_SKIN: SkinConfig = {
   id: 'classic-fruits',
   name: 'Classic Fruits', // 这将被 i18n 替换
   description: 'Traditional fruit merging game', // 这将被 i18n 替换
@@ -28,18 +48,18 @@ export const EMOJI_SKIN: SkinConfig = {
   description: 'Merge big emojis!', // 这将被 i18n 替换
   type: 'emoji',
   items: [
-    { label: 'smile', radius: 10, color: '#FFD700', score: 1, emoji: '😀' },
-    { label: 'laugh', radius: 15, color: '#FFD700', score: 2, emoji: '😂' },
-    { label: 'love', radius: 20, color: '#FF69B4', score: 3, emoji: '😍' },
-    { label: 'wink', radius: 25, color: '#FFD700', score: 4, emoji: '😉' },
-    { label: 'cool', radius: 30, color: '#87CEEB', score: 5, emoji: '😎' },
-    { label: 'party', radius: 35, color: '#FF6347', score: 6, emoji: '🥳' },
-    { label: 'fire', radius: 40, color: '#FF4500', score: 7, emoji: '🔥' },
-    { label: 'star', radius: 45, color: '#FFD700', score: 8, emoji: '⭐' },
-    { label: 'crown', radius: 50, color: '#FFD700', score: 9, emoji: '👑' },
-    { label: 'rainbow', radius: 55, color: '#FF69B4', score: 10, emoji: '🌈' },
-    { label: 'diamond', radius: 60, color: '#00CED1', score: 11, emoji: '💎' },
-  ],
+    { label: 'smile', radius: 10, score: 1, emoji: '😀' },
+    { label: 'laugh', radius: 15, score: 2, emoji: '😂' },
+    { label: 'love', radius: 20, score: 3, emoji: '😍' },
+    { label: 'wink', radius: 25, score: 4, emoji: '😉' },
+    { label: 'cool', radius: 30, score: 5, emoji: '😎' },
+    { label: 'party', radius: 35, score: 6, emoji: '🥳' },
+    { label: 'fire', radius: 40, score: 7, emoji: '🔥' },
+    { label: 'star', radius: 45, score: 8, emoji: '⭐' },
+    { label: 'crown', radius: 50, score: 9, emoji: '👑' },
+    { label: 'rainbow', radius: 55, score: 10, emoji: '🌈' },
+    { label: 'diamond', radius: 60, score: 11, emoji: '💎' },
+  ].map(item => ({ ...item, color: "#FFFFFF" })),
 };
 
 // 几何形状皮肤
@@ -64,11 +84,12 @@ export const GEOMETRIC_SKIN: SkinConfig = {
 };
 
 export const AVAILABLE_SKINS: SkinConfig[] = [
-  CLASSIC_FRUITS_SKIN,
+  MUSHROOM_SKIN,
+  FRUITS_SKIN,
   EMOJI_SKIN,
   GEOMETRIC_SKIN,
 ];
 
 export const getSkinById = (id: string): SkinConfig => {
-  return AVAILABLE_SKINS.find(skin => skin.id === id) || CLASSIC_FRUITS_SKIN;
+  return AVAILABLE_SKINS.find(skin => skin.id === id) || MUSHROOM_SKIN;
 };
