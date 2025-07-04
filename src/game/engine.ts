@@ -13,15 +13,24 @@ export const createRenderer = (element: HTMLElement) => {
       width: 400,
       height: 600,
       wireframes: false,
-      background: '#F7F4C8',
+      background: 'transparent',
     },
   });
 };
 
 export const createBoundaries = (width: number, height: number) => {
-  const ground = Bodies.rectangle(width / 2, height, width, 20, { isStatic: true, render: { fillStyle: '#E6B143' } });
-  const leftWall = Bodies.rectangle(0, height / 2, 20, height, { isStatic: true, render: { fillStyle: '#E6B143' } });
-  const rightWall = Bodies.rectangle(width, height / 2, 20, height, { isStatic: true, render: { fillStyle: '#E6B143' } });
+  const ground = Bodies.rectangle(width / 2, height, width, 20, { 
+    isStatic: true, 
+    render: { fillStyle: '#d97706' } 
+  });
+  const leftWall = Bodies.rectangle(0, height / 2, 20, height, { 
+    isStatic: true, 
+    render: { fillStyle: '#d97706' } 
+  });
+  const rightWall = Bodies.rectangle(width, height / 2, 20, height, { 
+    isStatic: true, 
+    render: { fillStyle: '#d97706' } 
+  });
   World.add(world, [ground, leftWall, rightWall]);
 };
 

@@ -7,6 +7,7 @@ import { engine, world } from '@/game/engine';
 import { createPhysicsBody } from '@/game/customRenderer';
 import { Fruit } from '@/types/fruits';
 import { useSkin } from '@/contexts/SkinContext';
+import { audioManager } from '@/utils/audioManager';
 
 const GAME_OVER_LINE_Y = 80;
 
@@ -128,6 +129,9 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
     const body = createPhysicsBody(x, 50, fruit, currentSkin.type);
     Matter.World.add(world, body);
     
+    // 播放掉落音效
+    audioManager.play('drop');
+    
     // 随机选择前5个水果中的一个作为下一个水果
     const availableFruits = currentSkin.items.slice(0, 5);
     setNextFruit(availableFruits[Math.floor(Math.random() * availableFruits.length)]);
@@ -175,6 +179,9 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
             (newFruitBody.plugin as any).isActivated = true;
             Matter.World.add(world, newFruitBody);
             setScore((prevScore) => prevScore + fruitA.score);
+            
+            // 播放合成音效
+            audioManager.play('merge');
           }
         }
       });
@@ -187,6 +194,8 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
         const plugin = body.plugin as any;
         if (plugin && plugin.fruit && plugin.isActivated && (Date.now() - plugin.creationTime > 1500) && body.position.y < GAME_OVER_LINE_Y && !body.isStatic && body.speed < 0.1 && body.angularSpeed < 0.1) {
           setIsGameOver(true);
+          // 播放游戏结束音效
+          audioManager.play('gameOver');
         }
       });
     };

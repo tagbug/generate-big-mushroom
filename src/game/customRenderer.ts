@@ -53,7 +53,7 @@ export const createCustomRenderer = (element: HTMLElement, skinConfig: SkinConfi
       width: 400,
       height: 600,
       wireframes: false,
-      background: '#F7F4C8',
+      background: 'transparent',
       // 启用高质量渲染
       showVelocity: false,
       showAngleIndicator: false,

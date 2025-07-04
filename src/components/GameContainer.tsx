@@ -23,9 +23,11 @@ const GameContainer = () => {
   useEffect(() => {
     const handleResize = () => {
       if (sceneRef.current) {
-        const containerWidth = sceneRef.current.parentElement?.clientWidth || 400;
-        const newScale = Math.min(1, containerWidth / 400);
-        setScale(newScale);
+        const containerWidth = window.innerWidth - 64; // 减去 padding
+        // 只在屏幕宽度小于游戏区域宽度时进行缩放
+        const gameAreaWidth = 400;
+        const newScale = containerWidth < gameAreaWidth ? containerWidth / gameAreaWidth : 1;
+        setScale(Math.max(0.5, Math.min(1, newScale))); // 最小缩放到0.5，最大1
       }
     };
 
@@ -127,32 +129,66 @@ const GameContainer = () => {
   }, [resetGame]);
 
   return (
-    <div className="relative w-full max-w-[400px]">
-      <div className="flex justify-between items-center mb-2 px-2">
-        <Scoreboard score={score} />
-        <div className="flex items-center gap-2">
+    <div className="relative w-full max-w-4xl mx-auto flex flex-col items-center">
+      {/* Header with game stats - 响应式设计 */}
+      <div className="relative z-20 flex flex-row sm:flex-row justify-between items-center gap-2 sm:gap-6 mb-3 sm:mb-6 px-2 sm:px-8 py-2 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20">
+        <div className="flex-shrink-0">
+          <Scoreboard score={score} />
+        </div>
+        <div className="flex flex-row sm:flex-row items-center gap-2 sm:gap-4">
           <NextPreview fruit={nextFruit} />
-          <SkinSelector />
+          <div className="relative z-40"> {/* 确保皮肤选择器在最上层 */}
+            <SkinSelector />
+          </div>
         </div>
       </div>
+      
+      {/* Game canvas container - 使用flex布局优化大屏幕显示 */}
       <div
-        ref={sceneRef}
-        className="w-[400px] h-[600px] mx-auto border cursor-pointer bg-[#F7F4C8] relative origin-top"
-        style={{ transform: `scale(${scale})`, transformOrigin: 'left top' }}
-        onClick={handleClick}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={hideGhostFruit}
-        onMouseMove={handleMouseMove}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
+        className="relative w-fit bg-gradient-to-b from-white/90 to-white/80 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/20 overflow-hidden"
+        style={{
+          transform: `scale(${scale})`,
+          transformOrigin: 'top center',
+        }}
       >
-        {/* Game Over Line */}
-        <div 
-          className="absolute top-[80px] left-0 w-full border-t-2 border-dashed border-red-500"
-          style={{ zIndex: 1 }}
-        />
+        {/* 在大屏幕下使用flex布局，小屏幕下保持原有布局 */}
+        <div className="flex justify-center items-center p-4 md:p-8">
+          <div
+            ref={sceneRef}
+            className="w-[400px] h-[600px] cursor-pointer relative transition-transform duration-300"
+            style={{ 
+              background: 'linear-gradient(135deg, #fef3c7 0%, #fde68a 50%, #f59e0b 100%)',
+              borderRadius: '12px',
+              boxShadow: '0 10px 25px rgba(0,0,0,0.1)'
+            }}
+            onClick={handleClick}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={hideGhostFruit}
+            onMouseMove={handleMouseMove}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
+            {/* Game Over Line with improved styling */}
+            <div 
+              className="absolute top-[80px] left-0 w-full border-t-2 border-dashed border-red-500/80 z-10"
+              style={{ 
+                filter: 'drop-shadow(0 0 4px rgba(239, 68, 68, 0.3))',
+              }}
+            />
+            
+            {/* Corner decorations */}
+            <div className="absolute top-2 left-2 w-4 h-4 bg-white/30 rounded-full"></div>
+            <div className="absolute top-2 right-2 w-4 h-4 bg-white/30 rounded-full"></div>
+            <div className="absolute bottom-2 left-2 w-4 h-4 bg-white/30 rounded-full"></div>
+            <div className="absolute bottom-2 right-2 w-4 h-4 bg-white/30 rounded-full"></div>
+          </div>
+        </div>
+        
+        {/* Subtle glow effect */}
+        <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-white/10 pointer-events-none rounded-b-2xl"></div>
       </div>
+      
       {isGameOver && <GameOverModal score={score} onRestart={handleRestart} />}
     </div>
   );
