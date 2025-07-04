@@ -156,6 +156,11 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
       event.pairs.forEach((pair) => {
         const { bodyA, bodyB } = pair;
 
+        if (bodyA.label === 'ghost' || bodyB.label === 'ghost') {
+          // 如果是幽灵物体，直接跳过
+          return;
+        }
+
         if (bodyA.plugin && (bodyA.plugin as any).fruit) {
           (bodyA.plugin as any).isActivated = true;
         }
