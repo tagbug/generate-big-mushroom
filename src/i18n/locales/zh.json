@@ -7,18 +7,62 @@
     "gameOver": "游戏结束",
     "yourScore": "你的分数: {{score}}",
     "restart": "重新开始",
-    "fruits": {
-      "cherry": "樱桃",
-      "strawberry": "草莓",
-      "grape": "葡萄",
-      "dekopon": "凸顶柑",
-      "persimmon": "柿子",
-      "apple": "苹果",
-      "pear": "梨",
-      "peach": "桃子",
-      "pineapple": "菠萝",
-      "melon": "蜜瓜",
-      "watermelon": "西瓜"
-    }
+    "selectSkin": "选择皮肤",
+    "skins": [
+      {
+        "id": "classic-fruits",
+        "name": "经典水果",
+        "desc": "传统的水果合成游戏",
+        "items": [
+          { "label": "cherry", "name": "樱桃" },
+          { "label": "strawberry", "name": "草莓" },
+          { "label": "grape", "name": "葡萄" },
+          { "label": "dekopon", "name": "凸顶柑" },
+          { "label": "persimmon", "name": "柿子" },
+          { "label": "apple", "name": "苹果" },
+          { "label": "pear", "name": "梨" },
+          { "label": "peach", "name": "桃子" },
+          { "label": "pineapple", "name": "菠萝" },
+          { "label": "melon", "name": "蜜瓜" },
+          { "label": "watermelon", "name": "西瓜" }
+        ]
+      },
+      {
+        "id": "emoji",
+        "name": "Emoji 表情",
+        "desc": "合成大表情！",
+        "items": [
+          { "label": "smile", "name": "微笑" },
+          { "label": "laugh", "name": "大笑" },
+          { "label": "love", "name": "爱心" },
+          { "label": "wink", "name": "眨眼" },
+          { "label": "cool", "name": "酷" },
+          { "label": "party", "name": "派对" },
+          { "label": "fire", "name": "火焰" },
+          { "label": "star", "name": "星星" },
+          { "label": "crown", "name": "皇冠" },
+          { "label": "rainbow", "name": "彩虹" },
+          { "label": "diamond", "name": "钻石" }
+        ]
+      },
+      {
+        "id": "geometric",
+        "name": "几何形状",
+        "desc": "简约的几何图形",
+        "items": [
+          { "label": "dot", "name": "点" },
+          { "label": "circle", "name": "圆" },
+          { "label": "ring", "name": "环" },
+          { "label": "disc", "name": "圆盘" },
+          { "label": "sphere", "name": "球体" },
+          { "label": "orb", "name": "圆球" },
+          { "label": "globe", "name": "地球" },
+          { "label": "planet", "name": "行星" },
+          { "label": "star", "name": "星星" },
+          { "label": "galaxy", "name": "银河" },
+          { "label": "universe", "name": "宇宙" }
+        ]
+      }
+    ]
   }
 }

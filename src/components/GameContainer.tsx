@@ -3,12 +3,16 @@
 import { useEffect, useRef, useCallback, useState } from 'react';
 import Matter from 'matter-js';
 import { engine, createRenderer, createBoundaries, runEngine, runRender, world } from '@/game/engine';
+import { createCustomRenderer } from '@/game/customRenderer';
 import { useGameLogic } from '@/hooks/useGameLogic';
+import { useSkin } from '@/contexts/SkinContext';
 import Scoreboard from './Scoreboard';
 import NextPreview from './NextPreview';
 import GameOverModal from './GameOverModal';
+import SkinSelector from './SkinSelector';
 
 const GameContainer = () => {
+  const { currentSkin } = useSkin();
   const sceneRef = useRef<HTMLDivElement>(null);
   const renderRef = useRef<Matter.Render | null>(null);
   const runnerRef = useRef<Matter.Runner | null>(null);
@@ -32,7 +36,11 @@ const GameContainer = () => {
 
   useEffect(() => {
     if (sceneRef.current && !renderRef.current) {
-      const render = createRenderer(sceneRef.current);
+      // 根据皮肤类型选择渲染器
+      const render = (currentSkin.type === 'emoji' || currentSkin.type === 'polygon')
+        ? createCustomRenderer(sceneRef.current, currentSkin)
+        : createRenderer(sceneRef.current);
+      
       renderRef.current = render;
 
       createBoundaries(render.options.width!, render.options.height!);
@@ -58,7 +66,7 @@ const GameContainer = () => {
         runnerRef.current = null;
       }
     };
-  }, []);
+  }, [currentSkin]); // 依赖于当前皮肤
 
   const getEventX = (
     event: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>,
@@ -122,7 +130,10 @@ const GameContainer = () => {
     <div className="relative w-full max-w-[400px]">
       <div className="flex justify-between items-center mb-2 px-2">
         <Scoreboard score={score} />
-        <NextPreview fruit={nextFruit} />
+        <div className="flex items-center gap-2">
+          <NextPreview fruit={nextFruit} />
+          <SkinSelector />
+        </div>
       </div>
       <div
         ref={sceneRef}

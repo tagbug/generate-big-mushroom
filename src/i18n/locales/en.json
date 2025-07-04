@@ -7,18 +7,62 @@
     "gameOver": "Game Over",
     "yourScore": "Your Score: {{score}}",
     "restart": "Restart",
-    "fruits": {
-      "cherry": "Cherry",
-      "strawberry": "Strawberry",
-      "grape": "Grape",
-      "dekopon": "Dekopon",
-      "persimmon": "Persimmon",
-      "apple": "Apple",
-      "pear": "Pear",
-      "peach": "Peach",
-      "pineapple": "Pineapple",
-      "melon": "Melon",
-      "watermelon": "Watermelon"
-    }
+    "selectSkin": "Select Skin",
+    "skins": [
+      {
+        "id": "classic-fruits",
+        "name": "Classic Fruits",
+        "desc": "Traditional fruit merging game",
+        "items": [
+          { "label": "cherry", "name": "Cherry" },
+          { "label": "strawberry", "name": "Strawberry" },
+          { "label": "grape", "name": "Grape" },
+          { "label": "dekopon", "name": "Dekopon" },
+          { "label": "persimmon", "name": "Persimmon" },
+          { "label": "apple", "name": "Apple" },
+          { "label": "pear", "name": "Pear" },
+          { "label": "peach", "name": "Peach" },
+          { "label": "pineapple", "name": "Pineapple" },
+          { "label": "melon", "name": "Melon" },
+          { "label": "watermelon", "name": "Watermelon" }
+        ]
+      },
+      {
+        "id": "emoji",
+        "name": "Emoji Faces",
+        "desc": "Merge big emojis!",
+        "items": [
+          { "label": "smile", "name": "Smile" },
+          { "label": "laugh", "name": "Laugh" },
+          { "label": "love", "name": "Love" },
+          { "label": "wink", "name": "Wink" },
+          { "label": "cool", "name": "Cool" },
+          { "label": "party", "name": "Party" },
+          { "label": "fire", "name": "Fire" },
+          { "label": "star", "name": "Star" },
+          { "label": "crown", "name": "Crown" },
+          { "label": "rainbow", "name": "Rainbow" },
+          { "label": "diamond", "name": "Diamond" }
+        ]
+      },
+      {
+        "id": "geometric",
+        "name": "Geometric Shapes",
+        "desc": "Minimalist geometric forms",
+        "items": [
+          { "label": "dot", "name": "Dot" },
+          { "label": "circle", "name": "Circle" },
+          { "label": "ring", "name": "Ring" },
+          { "label": "disc", "name": "Disc" },
+          { "label": "sphere", "name": "Sphere" },
+          { "label": "orb", "name": "Orb" },
+          { "label": "globe", "name": "Globe" },
+          { "label": "planet", "name": "Planet" },
+          { "label": "star", "name": "Star" },
+          { "label": "galaxy", "name": "Galaxy" },
+          { "label": "universe", "name": "Universe" }
+        ]
+      }
+    ]
   }
 }

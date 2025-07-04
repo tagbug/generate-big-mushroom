@@ -3,9 +3,10 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Matter from 'matter-js';
-import { FRUITS } from '@/game/fruits';
 import { engine, world } from '@/game/engine';
+import { createPhysicsBody } from '@/game/customRenderer';
 import { Fruit } from '@/types/fruits';
+import { useSkin } from '@/contexts/SkinContext';
 
 const GAME_OVER_LINE_Y = 80;
 
@@ -18,9 +19,10 @@ const hexToRgba = (hex: string, alpha: number) => {
 };
 
 export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) => {
+  const { currentSkin } = useSkin();
   const [score, setScore] = useState(0);
   const [isGameOver, setIsGameOver] = useState(false);
-  const [nextFruit, setNextFruit] = useState<Fruit>(FRUITS[0]);
+  const [nextFruit, setNextFruit] = useState<Fruit>(currentSkin.items[0]);
   const ghostFruitBodyRef = useRef<Matter.Body | null>(null);
 
   const showGhostFruit = useCallback((x?: number) => {
@@ -62,32 +64,27 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
   const resetGame = useCallback(() => {
     setIsGameOver(false);
     setScore(0);
-    setNextFruit(FRUITS[0]);
+    setNextFruit(currentSkin.items[0]);
     const fruitsToRemove = world.bodies.filter(body => !body.isStatic);
     Matter.World.remove(world, fruitsToRemove);
-  }, []);
+  }, [currentSkin]);
 
   const addFruit = useCallback((x: number) => {
     if (isGameOver) return;
 
     const fruit = nextFruit;
-    const body = Matter.Bodies.circle(x, 50, fruit.radius, {
-      label: fruit.label,
-      restitution: 0.2,
-      friction: 0.5,
-      render: {
-        fillStyle: fruit.color,
-      },
-      plugin: {
-        fruit,
-        isActivated: false,
-        creationTime: Date.now(),
-      },
-    });
-
+    const body = createPhysicsBody(x, 50, fruit, currentSkin.type);
     Matter.World.add(world, body);
-    setNextFruit(FRUITS[Math.floor(Math.random() * 5)]);
-  }, [nextFruit, isGameOver]);
+    
+    // 随机选择前5个水果中的一个作为下一个水果
+    const availableFruits = currentSkin.items.slice(0, 5);
+    setNextFruit(availableFruits[Math.floor(Math.random() * availableFruits.length)]);
+  }, [nextFruit, isGameOver, currentSkin]);
+
+  // 当皮肤改变时重置游戏
+  useEffect(() => {
+    resetGame();
+  }, [currentSkin.id]);
 
   useEffect(() => {
     if (ghostFruitBodyRef.current) {
@@ -113,28 +110,17 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
         const fruitB = (bodyB.plugin as any).fruit as Fruit | undefined;
 
         if (fruitA && fruitB && fruitA.label === fruitB.label) {
-          const currentFruitIndex = FRUITS.findIndex(f => f.label === fruitA.label);
-          if (currentFruitIndex < FRUITS.length - 1) {
-            const nextFruitInLine = FRUITS[currentFruitIndex + 1];
+          const currentFruitIndex = currentSkin.items.findIndex(f => f.label === fruitA.label);
+          if (currentFruitIndex < currentSkin.items.length - 1) {
+            const nextFruitInLine = currentSkin.items[currentFruitIndex + 1];
             Matter.World.remove(world, [bodyA, bodyB]);
-            const newFruitBody = Matter.Bodies.circle(
+            const newFruitBody = createPhysicsBody(
               (bodyA.position.x + bodyB.position.x) / 2,
               (bodyA.position.y + bodyB.position.y) / 2,
-              nextFruitInLine.radius,
-              {
-                label: nextFruitInLine.label,
-                restitution: 0.2,
-                friction: 0.5,
-                render: {
-                  fillStyle: nextFruitInLine.color,
-                },
-                plugin: {
-                  fruit: nextFruitInLine,
-                  isActivated: true,
-                  creationTime: Date.now(),
-                },
-              }
+              nextFruitInLine,
+              currentSkin.type
             );
+            (newFruitBody.plugin as any).isActivated = true;
             Matter.World.add(world, newFruitBody);
             setScore((prevScore) => prevScore + fruitA.score);
           }
@@ -160,7 +146,7 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
       Matter.Events.off(engine, 'collisionStart', handleCollision);
       Matter.Events.off(engine, 'afterUpdate', checkGameOver);
     };
-  }, [isGameOver]);
+  }, [isGameOver, currentSkin]);
 
   return { score, isGameOver, addFruit, nextFruit, resetGame, showGhostFruit, hideGhostFruit, updateGhostFruitPosition };
 };
