@@ -23,7 +23,7 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
   const [nextFruit, setNextFruit] = useState<Fruit>(FRUITS[0]);
   const ghostFruitBodyRef = useRef<Matter.Body | null>(null);
 
-  const showGhostFruit = useCallback(() => {
+  const showGhostFruit = useCallback((x?: number) => {
     if (ghostFruitBodyRef.current) {
       Matter.World.remove(world, ghostFruitBodyRef.current);
     }
@@ -41,6 +41,9 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
     });
     ghostFruitBodyRef.current = ghostBody;
     Matter.World.add(world, ghostBody);
+    if (x !== undefined) {
+      Matter.Body.setPosition(ghostBody, { x, y: 50 });
+    }
   }, [nextFruit]);
 
   const hideGhostFruit = useCallback(() => {
@@ -88,7 +91,7 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
 
   useEffect(() => {
     if (ghostFruitBodyRef.current) {
-      showGhostFruit();
+      showGhostFruit(ghostFruitBodyRef.current.position.x);
     }
   }, [nextFruit, showGhostFruit]);
 

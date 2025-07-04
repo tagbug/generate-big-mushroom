@@ -88,15 +88,19 @@ const GameContainer = () => {
     addFruit(x);
   }, [addFruit, scale]);
 
+  const handleMouseEnter = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
+    const x = getEventX(event);
+    showGhostFruit(x);
+  }, [showGhostFruit, scale]);
+
   const handleMouseMove = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
     const x = getEventX(event);
     updateGhostFruitPosition(x);
   }, [updateGhostFruitPosition, scale]);
 
   const handleTouchStart = useCallback((event: React.TouchEvent<HTMLDivElement>) => {
-    showGhostFruit();
     const x = getEventX(event);
-    updateGhostFruitPosition(x);
+    showGhostFruit(x);
   }, [showGhostFruit, updateGhostFruitPosition, scale]);
 
   const handleTouchMove = useCallback((event: React.TouchEvent<HTMLDivElement>) => {
@@ -125,7 +129,7 @@ const GameContainer = () => {
         className="w-[400px] h-[600px] mx-auto border cursor-pointer bg-[#F7F4C8] relative origin-top"
         style={{ transform: `scale(${scale})`, transformOrigin: 'left top' }}
         onClick={handleClick}
-        onMouseEnter={showGhostFruit}
+        onMouseEnter={handleMouseEnter}
         onMouseLeave={hideGhostFruit}
         onMouseMove={handleMouseMove}
         onTouchStart={handleTouchStart}
