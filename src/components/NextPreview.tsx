@@ -16,13 +16,13 @@ const NextPreview: React.FC<NextPreviewProps> = ({ fruits }) => {
   
   return (
     <div className="flex items-center gap-2 sm:gap-3 bg-white/50 rounded-lg p-1.5 sm:px-3 sm:py-2 shadow-sm">
-      <span className="text-xs sm:text-base font-medium text-gray-700">{t('next')}:</span>
+      <span className="text-xs sm:text-sm font-medium text-gray-700">{t('next')}:</span>
       <div className="flex items-center gap-2">
         {fruits.map((fruit, index) => (
           <Fragment key={`Frag-${fruit.label}-${index}`}>
             <div
               key={`div-${fruit.label}-${index}`}
-              className="w-3 h-3 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs"
+              className="w-3 h-3 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-xs"
               style={(!['emoji', 'polygon'].includes(currentSkin.type) ? { backgroundColor: fruit.color } : {})}
             >
               {currentSkin.type === 'emoji' && fruit.emoji ? (
@@ -50,7 +50,7 @@ const NextPreview: React.FC<NextPreviewProps> = ({ fruits }) => {
                 />
               ) : null}
             </div>
-            <span key={`span-${fruit.label}-${index}`} className="hidden sm:block text-xs sm:text-base text-gray-600 whitespace-nowrap">
+            <span key={`span-${fruit.label}-${index}`} className="hidden sm:block text-xs sm:text-sm text-gray-600 whitespace-nowrap">
               {getItemName(currentSkin.id, fruit.label)}
             </span>
           </Fragment>

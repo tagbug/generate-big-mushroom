@@ -10,6 +10,7 @@ import Scoreboard from './Scoreboard';
 import NextPreview from './NextPreview';
 import GameOverModal from './GameOverModal';
 import SkinSelector from './SkinSelector';
+import MergePath from './MergePath';
 
 const GameContainer = () => {
   const { currentSkin } = useSkin();
@@ -141,6 +142,7 @@ const GameContainer = () => {
           <div className="relative z-40"> {/* 确保皮肤选择器在最上层 */}
             <SkinSelector />
           </div>
+          <MergePath />
         </div>
       </div>
       

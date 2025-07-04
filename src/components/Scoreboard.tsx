@@ -18,8 +18,8 @@ const Scoreboard: React.FC<ScoreboardProps> = ({ score }) => {
       animate={{ scale: score > 0 ? [1, 1.1, 1] : 1 }}
       transition={{ duration: 0.3 }}
     >
-      <Trophy className="w-3 h-3 sm:w-6 sm:h-6 text-white" />
-      <span className="text-xs sm:text-lg md:text-xl font-bold text-white whitespace-nowrap">
+      <Trophy className="w-3 h-3 sm:w-5 sm:h-5 text-white" />
+      <span className="text-xs sm:text-sm font-bold text-white whitespace-nowrap">
         {t('score')}: {score.toLocaleString()}
       </span>
     </motion.div>

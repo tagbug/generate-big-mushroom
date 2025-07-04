@@ -27,7 +27,7 @@ const SkinSelector: React.FC = () => {
         whileTap={{ scale: 0.95 }}
       >
         <Palette className="w-3 h-3 sm:w-5 sm:h-5" />
-        <span className="hidden sm:block text-xs sm:text-base font-medium whitespace-nowrap">
+        <span className="hidden sm:block text-xs sm:text-sm font-medium whitespace-nowrap">
           {getSkinName(currentSkin.id)}
         </span>
         <motion.div

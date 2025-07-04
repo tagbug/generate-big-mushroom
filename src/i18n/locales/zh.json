@@ -9,6 +9,8 @@
     "yourScore": "你的分数: {{score}}",
     "restart": "重新开始",
     "selectSkin": "选择皮肤",
+    "merge_path": "合成路线",
+    "merge_path_description": "这是当前皮肤的完整合成路线。合并两个相同的物品可以创造出序列中的下一个物品。",
     "skins": [
       {
         "id": "mushroom",
