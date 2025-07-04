@@ -31,22 +31,74 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
     }
 
     const fruit = nextFruit;
-    const ghostBody = Matter.Bodies.circle(0, 50, fruit.radius, {
-      isStatic: true,
-      isSensor: true,
-      label: 'ghost',
-      render: {
-        fillStyle: hexToRgba(fruit.color, 0.3),
-        strokeStyle: hexToRgba(fruit.color, 0.8),
-        lineWidth: 2,
-      },
-    });
+    let ghostBody: Matter.Body;
+    
+    // 根据皮肤类型创建不同的幽灵物体
+    switch (currentSkin.type) {
+      case 'polygon':
+        if (fruit.sides && fruit.sides > 2) {
+          ghostBody = Matter.Bodies.polygon(0, 50, fruit.sides, fruit.radius, {
+            isStatic: true,
+            isSensor: true,
+            label: 'ghost',
+            render: {
+              fillStyle: hexToRgba(fruit.color, 0.3),
+              strokeStyle: hexToRgba(fruit.color, 0.8),
+              lineWidth: 2,
+            },
+          });
+        } else {
+          // 备选圆形
+          ghostBody = Matter.Bodies.circle(0, 50, fruit.radius, {
+            isStatic: true,
+            isSensor: true,
+            label: 'ghost',
+            render: {
+              fillStyle: hexToRgba(fruit.color, 0.3),
+              strokeStyle: hexToRgba(fruit.color, 0.8),
+              lineWidth: 2,
+            },
+          });
+        }
+        break;
+      
+      case 'emoji':
+        ghostBody = Matter.Bodies.circle(0, 50, fruit.radius, {
+          isStatic: true,
+          isSensor: true,
+          label: 'ghost',
+          render: {
+            fillStyle: 'rgba(255, 255, 255, 0.3)',
+            strokeStyle: 'rgba(128, 128, 128, 0.8)',
+            lineWidth: 2,
+          },
+          plugin: {
+            fruit: { ...fruit, emoji: fruit.emoji },
+            isGhost: true,
+          },
+        });
+        break;
+      
+      default:
+        ghostBody = Matter.Bodies.circle(0, 50, fruit.radius, {
+          isStatic: true,
+          isSensor: true,
+          label: 'ghost',
+          render: {
+            fillStyle: hexToRgba(fruit.color, 0.3),
+            strokeStyle: hexToRgba(fruit.color, 0.8),
+            lineWidth: 2,
+          },
+        });
+        break;
+    }
+    
     ghostFruitBodyRef.current = ghostBody;
     Matter.World.add(world, ghostBody);
     if (x !== undefined) {
       Matter.Body.setPosition(ghostBody, { x, y: 50 });
     }
-  }, [nextFruit]);
+  }, [nextFruit, currentSkin]);
 
   const hideGhostFruit = useCallback(() => {
     if (ghostFruitBodyRef.current) {

@@ -83,6 +83,7 @@ export const createCustomRenderer = (element: HTMLElement, skinConfig: SkinConfi
     engine.world.bodies.forEach((body: Matter.Body) => {
       if (body.plugin && (body.plugin as any).fruit) {
         const fruit = (body.plugin as any).fruit;
+        const isGhost = (body.plugin as any).isGhost;
         const pos = body.position;
         const angle = body.angle;
 
@@ -97,15 +98,23 @@ export const createCustomRenderer = (element: HTMLElement, skinConfig: SkinConfi
               const emojiCanvas = createEmojiCanvas(fruit.emoji, fruit.radius);
               const size = fruit.radius * 2.4;
               
+              // 如果是幽灵物体，添加透明效果
+              if (isGhost) {
+                ctx.globalAlpha = 0.4;
+              }
+              
               // 绘制缓存的 Emoji
               ctx.drawImage(emojiCanvas, -size / 2, -size / 2, size, size);
+              
+              // 重置透明度
+              ctx.globalAlpha = 1;
               
               // 可选：添加一个很淡的圆形边框，帮助识别边界
               if (fruit.radius > 15) {
                 ctx.beginPath();
                 ctx.arc(0, 0, fruit.radius * 0.95, 0, Math.PI * 2);
-                ctx.strokeStyle = 'rgba(0, 0, 0, 0.08)';
-                ctx.lineWidth = 1;
+                ctx.strokeStyle = isGhost ? 'rgba(128, 128, 128, 0.5)' : 'rgba(0, 0, 0, 0.08)';
+                ctx.lineWidth = isGhost ? 2 : 1;
                 ctx.stroke();
               }
             }
@@ -130,11 +139,23 @@ export const createCustomRenderer = (element: HTMLElement, skinConfig: SkinConfi
               }
               
               ctx.closePath();
-              ctx.fillStyle = fruit.color;
-              ctx.fill();
-              ctx.strokeStyle = '#000000';
-              ctx.lineWidth = 1;
-              ctx.stroke();
+              
+              if (isGhost) {
+                ctx.globalAlpha = 0.3;
+                ctx.fillStyle = fruit.color;
+                ctx.fill();
+                ctx.globalAlpha = 0.8;
+                ctx.strokeStyle = fruit.color;
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                ctx.globalAlpha = 1;
+              } else {
+                ctx.fillStyle = fruit.color;
+                ctx.fill();
+                ctx.strokeStyle = '#000000';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+              }
             }
             break;
           
