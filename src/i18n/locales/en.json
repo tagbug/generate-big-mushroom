@@ -11,6 +11,12 @@
     "selectSkin": "Select Skin",
     "merge_path": "Merge Path",
     "merge_path_description": "This is the complete merge path for the current skin. Merge two identical items to create the next item in the sequence.",
+    "leaderboard": "Leaderboard",
+    "top_scores": "Top {{count}} Scores",
+    "no_scores_yet": "No scores yet",
+    "new_record": "New Record!",
+    "new_entry": "New High Score!",
+    "and_more": "...and {{count}} more",
     "skins": [
       {
         "id": "mushroom",

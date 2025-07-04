@@ -70,6 +70,11 @@ class AudioManager {
       case 'click':
         this.playTone(880, 0.05, 0.1);
         break;
+      case 'newRecord':
+        // 播放胜利音效
+        this.playChord([523, 659, 784, 1047], 0.5, 0.2);
+        setTimeout(() => this.playChord([659, 784, 1047, 1319], 0.3, 0.15), 200);
+        break;
       default:
         console.warn(`Unknown sound: ${soundName}`);
     }
@@ -89,6 +94,26 @@ class AudioManager {
 
   public getVolume(): number {
     return this.volume;
+  }
+
+  public playNewRecord() {
+    this.play('newRecord');
+  }
+
+  public playGameOver() {
+    this.play('gameOver');
+  }
+
+  public playClick() {
+    this.play('click');
+  }
+
+  public playDrop() {
+    this.play('drop');
+  }
+
+  public playMerge() {
+    this.play('merge');
   }
 }
 

@@ -11,6 +11,12 @@
     "selectSkin": "选择皮肤",
     "merge_path": "合成路线",
     "merge_path_description": "这是当前皮肤的完整合成路线。合并两个相同的物品可以创造出序列中的下一个物品。",
+    "leaderboard": "排行榜",
+    "top_scores": "前{{count}}名",
+    "no_scores_yet": "暂无记录",
+    "new_record": "新纪录！",
+    "new_entry": "新高分！",
+    "and_more": "...还有{{count}}个",
     "skins": [
       {
         "id": "mushroom",
