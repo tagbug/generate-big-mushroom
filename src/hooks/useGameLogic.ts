@@ -8,8 +8,22 @@ import { createPhysicsBody } from '@/game/customRenderer';
 import { Fruit } from '@/types/fruits';
 import { useSkin } from '@/contexts/SkinContext';
 import { audioManager } from '@/utils/audioManager';
+import { LEFT_BOUNDARY, RIGHT_BOUNDARY, GAME_OVER_LINE_Y } from '@/game/constant';
 
-const GAME_OVER_LINE_Y = 80;
+
+
+// 根据水果半径计算边界限制
+const getBoundaryLimits = (fruitRadius: number) => {
+  const minX = LEFT_BOUNDARY + fruitRadius;
+  const maxX = RIGHT_BOUNDARY - fruitRadius;
+  return { minX, maxX };
+};
+
+// 限制x坐标在边界内
+const clampToBoundary = (x: number, fruitRadius: number) => {
+  const { minX, maxX } = getBoundaryLimits(fruitRadius);
+  return Math.max(minX, Math.min(maxX, x));
+};
 
 // Helper to convert hex color to rgba
 const hexToRgba = (hex: string, alpha: number) => {
@@ -99,7 +113,9 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
     ghostFruitBodyRef.current = ghostBody;
     Matter.World.add(world, ghostBody);
     if (x !== undefined) {
-      Matter.Body.setPosition(ghostBody, { x, y: 50 });
+      // 应用边界限制
+      const clampedX = clampToBoundary(x, fruit.radius);
+      Matter.Body.setPosition(ghostBody, { x: clampedX, y: 50 });
     }
   }, [nextFruit, currentSkin]);
 
@@ -112,9 +128,12 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
 
   const updateGhostFruitPosition = useCallback((x: number) => {
     if (ghostFruitBodyRef.current) {
-      Matter.Body.setPosition(ghostFruitBodyRef.current, { x, y: 50 });
+      const fruit = nextFruit[0];
+      // 应用边界限制
+      const clampedX = clampToBoundary(x, fruit.radius);
+      Matter.Body.setPosition(ghostFruitBodyRef.current, { x: clampedX, y: 50 });
     }
-  }, []);
+  }, [nextFruit]);
 
   const resetGame = useCallback(() => {
     setIsGameOver(false);
@@ -128,7 +147,9 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
     if (isGameOver) return;
 
     const fruit = nextFruit[0];
-    const body = createPhysicsBody(x, 50, fruit, currentSkin.type);
+    // 应用边界限制
+    const clampedX = clampToBoundary(x, fruit.radius);
+    const body = createPhysicsBody(clampedX, 50, fruit, currentSkin.type);
     Matter.World.add(world, body);
     
     // 播放掉落音效
@@ -176,9 +197,13 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
           if (currentFruitIndex < currentSkin.items.length - 1) {
             const nextFruitInLine = currentSkin.items[currentFruitIndex + 1];
             Matter.World.remove(world, [bodyA, bodyB]);
+            // 计算新水果的位置并应用边界限制
+            const newX = (bodyA.position.x + bodyB.position.x) / 2;
+            const newY = (bodyA.position.y + bodyB.position.y) / 2;
+            const clampedX = clampToBoundary(newX, nextFruitInLine.radius);
             const newFruitBody = createPhysicsBody(
-              (bodyA.position.x + bodyB.position.x) / 2,
-              (bodyA.position.y + bodyB.position.y) / 2,
+              clampedX,
+              newY,
               nextFruitInLine,
               currentSkin.type
             );

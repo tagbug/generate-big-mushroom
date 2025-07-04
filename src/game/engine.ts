@@ -1,4 +1,5 @@
 import Matter from 'matter-js';
+import { CANVAS_WIDTH, CANVAS_HEIGHT } from './constant';
 
 const { Engine, Render, World, Bodies, Runner } = Matter;
 
@@ -10,8 +11,8 @@ export const createRenderer = (element: HTMLElement) => {
     element,
     engine,
     options: {
-      width: 400,
-      height: 600,
+      width: CANVAS_WIDTH,
+      height: CANVAS_HEIGHT,
       wireframes: false,
       background: 'transparent',
     },

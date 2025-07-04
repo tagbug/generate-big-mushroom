@@ -11,6 +11,7 @@ import NextPreview from './NextPreview';
 import GameOverModal from './GameOverModal';
 import SkinSelector from './SkinSelector';
 import MergePath from './MergePath';
+import { CANVAS_HEIGHT, CANVAS_WIDTH } from '@/game/constant';
 
 const GameContainer = () => {
   const { currentSkin } = useSkin();
@@ -26,7 +27,7 @@ const GameContainer = () => {
       if (sceneRef.current) {
         const containerWidth = window.innerWidth - 64; // 减去 padding
         // 只在屏幕宽度小于游戏区域宽度时进行缩放
-        const gameAreaWidth = 400;
+        const gameAreaWidth = CANVAS_WIDTH;
         const newScale = containerWidth < gameAreaWidth ? containerWidth / gameAreaWidth : 1;
         setScale(Math.max(0.5, Math.min(1, newScale))); // 最小缩放到0.5，最大1
       }
@@ -87,8 +88,9 @@ const GameContainer = () => {
       } else {
         clientX = event.clientX;
       }
-      // 限制 x 在画布范围内
+      // 获取相对于画布的 x 坐标
       const x = (clientX - rect.left) / scale;
+      // 限制在画布范围内，边界限制在 useGameLogic 中处理
       return Math.max(0, Math.min(x, rect.width / scale));
     }
     return 0;
@@ -159,7 +161,7 @@ const GameContainer = () => {
         <div className="flex justify-center items-center p-4 md:p-8">
           <div
             ref={sceneRef}
-            className="w-[400px] h-[600px] cursor-pointer relative transition-transform duration-300 touch-none"
+            className={`w-[${CANVAS_WIDTH}px] h-[${CANVAS_HEIGHT}px] cursor-pointer relative transition-transform duration-300 touch-none`}
             style={{ 
               background: 'transparent',
               borderRadius: '12px',
