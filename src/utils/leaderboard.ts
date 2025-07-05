@@ -5,50 +5,50 @@ export interface LeaderboardEntry {
   rank: number;
 }
 
+export type ScoreSavedResult = {
+  isSkinNewRecord: boolean;
+  skinRank: number;
+  isOverallNewRecord: boolean;
+  overallRank: number;
+};
+
 const LEADERBOARD_KEY = 'generate-big-mushroom-leaderboard';
 const MAX_ENTRIES = 10;
 
-export const getLeaderboard = (): LeaderboardEntry[] => {
+// 获取所有分数，不进行筛选
+const getAllScores = (): Omit<LeaderboardEntry, 'rank'>[] => {
   try {
     if (typeof window === 'undefined') return [];
     const data = localStorage.getItem(LEADERBOARD_KEY);
     return data ? JSON.parse(data) : [];
   } catch (error) {
-    console.error('Error loading leaderboard:', error);
+    console.error('Error loading scores:', error);
     return [];
   }
 };
 
-export const saveScore = (score: number, skinId: string): { isNewRecord: boolean; rank: number } => {
+// 获取排行榜，可按皮肤ID筛选
+export const getLeaderboard = (skinId?: string | null): LeaderboardEntry[] => {
+  let scores = getAllScores();
+  if (skinId) {
+    scores = scores.filter(entry => entry.skinId === skinId);
+  }
+  return scores
+    .sort((a, b) => b.score - a.score)
+    .slice(0, MAX_ENTRIES)
+    .map((entry, index) => ({
+      ...entry,
+      rank: index + 1,
+    }));
+};
+
+export const saveScore = (score: number, skinId: string): ScoreSavedResult => {
   try {
     if (typeof window === 'undefined') {
-      return { isNewRecord: false, rank: MAX_ENTRIES + 1 };
+      return { isSkinNewRecord: false, skinRank: MAX_ENTRIES + 1, isOverallNewRecord: false, overallRank: MAX_ENTRIES + 1 };
     }
     
-    const leaderboard = getLeaderboard();
-    
-    // 检查是否已经存在相同的分数记录（在最近的1秒内）
-    const now = new Date();
-    const recentEntries = leaderboard.filter(entry => {
-      const entryDate = new Date(entry.date);
-      const timeDiff = now.getTime() - entryDate.getTime();
-      return entry.score === score && entry.skinId === skinId && timeDiff < 1000; // 1秒内
-    });
-    
-    if (recentEntries.length > 0) {
-      // 如果已存在相同的最近记录，返回现有记录的信息
-      const existingEntry = recentEntries[0];
-      const existingRank = leaderboard.findIndex(entry => 
-        entry.score === existingEntry.score && 
-        entry.date === existingEntry.date && 
-        entry.skinId === existingEntry.skinId
-      ) + 1;
-      
-      return { 
-        isNewRecord: existingRank === 1, 
-        rank: existingRank 
-      };
-    }
+    const allScores = getAllScores();
     
     const newEntry: Omit<LeaderboardEntry, 'rank'> = {
       score,
@@ -56,30 +56,32 @@ export const saveScore = (score: number, skinId: string): { isNewRecord: boolean
       skinId,
     };
 
-    // 添加新分数并排序
-    const updatedLeaderboard = [...leaderboard, newEntry]
-      .sort((a, b) => b.score - a.score)
-      .slice(0, MAX_ENTRIES)
-      .map((entry, index) => ({
-        ...entry,
-        rank: index + 1,
-      }));
+    // 添加新分数并保存
+    const updatedScores = [...allScores, newEntry];
+    localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(updatedScores));
 
-    // 保存到localStorage
-    localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(updatedLeaderboard));
-
-    // 检查是否是新纪录
-    const currentEntry = updatedLeaderboard.find(entry => 
+    // 获取特定皮肤的排行榜来确定排名
+    const skinLeaderboard = getLeaderboard(skinId);
+    const currentEntry = skinLeaderboard.find(entry => 
       entry.score === score && entry.skinId === skinId && entry.date === newEntry.date
     );
     
-    const rank = currentEntry?.rank || MAX_ENTRIES + 1;
-    const isNewRecord = rank === 1 && updatedLeaderboard.length > 0;
+    const skinRank = currentEntry?.rank || MAX_ENTRIES + 1;
+    const isSkinNewRecord = skinRank === 1;
 
-    return { isNewRecord, rank };
+    // 获取总体排行榜
+    const overallLeaderboard = getLeaderboard();
+    const overallEntry = overallLeaderboard.find(entry => 
+      entry.score === score && entry.skinId === skinId && entry.date === newEntry.date
+    );
+
+    const overallRank = overallEntry?.rank || MAX_ENTRIES + 1;
+    const isOverallNewRecord = overallRank === 1;
+
+    return { isSkinNewRecord: isSkinNewRecord, skinRank: skinRank, isOverallNewRecord: isOverallNewRecord, overallRank: overallRank };
   } catch (error) {
     console.error('Error saving score:', error);
-    return { isNewRecord: false, rank: MAX_ENTRIES + 1 };
+    return { isSkinNewRecord: false, skinRank: MAX_ENTRIES + 1, isOverallNewRecord: false, overallRank: MAX_ENTRIES + 1 };
   }
 };
 
@@ -93,11 +95,7 @@ export const clearLeaderboard = (): void => {
 };
 
 export const getPersonalBest = (skinId?: string): number => {
-  const leaderboard = getLeaderboard();
-  if (!skinId) {
-    return leaderboard.length > 0 ? leaderboard[0].score : 0;
-  }
-  
-  const skinEntries = leaderboard.filter(entry => entry.skinId === skinId);
-  return skinEntries.length > 0 ? skinEntries[0].score : 0;
+  const leaderboard = getLeaderboard(skinId);
+  return leaderboard.length > 0 ? leaderboard[0].score : 0;
 };
+

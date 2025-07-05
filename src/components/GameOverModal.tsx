@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
-import { RefreshCw, Trophy, Star, Award, Eye } from 'lucide-react';
-import { getLeaderboard, saveScore, LeaderboardEntry } from '@/utils/leaderboard';
+import { RefreshCw, Trophy, Star, Eye } from 'lucide-react';
+import { ScoreSavedResult, saveScore } from '@/utils/leaderboard';
 import { useSkin } from '@/contexts/SkinContext';
 import Leaderboard from './Leaderboard';
 import { audioManager } from '@/utils/audioManager';
@@ -18,36 +18,30 @@ interface GameOverModalProps {
 const GameOverModal: React.FC<GameOverModalProps> = ({ score, onRestart }) => {
   const { t } = useTranslation();
   const { currentSkin } = useSkin();
-  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
-  const [isNewRecord, setIsNewRecord] = useState(false);
-  const [newRecordRank, setNewRecordRank] = useState<number | undefined>();
-  const [hasInitialized, setHasInitialized] = useState(false);
+  const [savedResult, setSavedResult] = useState<ScoreSavedResult>();
   const [mounted, setMounted] = useState(false);
   const [transparent, setTransparent] = useState(false);
+  const hasSavedScore = useRef(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   useEffect(() => {
-    // 只在第一次加载时保存分数和获取排行榜
-    if (!hasInitialized) {
+    // The ref ensures this effect runs only once per modal instance
+    if (mounted && !hasSavedScore.current) {
       const result = saveScore(score, currentSkin.id);
-      const updatedLeaderboard = getLeaderboard();
-      
-      setLeaderboard(updatedLeaderboard);
-      setIsNewRecord(result.isNewRecord);
-      setNewRecordRank(result.rank);
-      setHasInitialized(true);
+      setSavedResult(result);
+      hasSavedScore.current = true; // Mark as saved
 
-      // 播放音效
-      if (result.isNewRecord) {
+      // Play sound effects based on the result
+      if (result.isSkinNewRecord || result.isOverallNewRecord) {
         audioManager.playNewRecord();
-      } else if (result.rank <= 10) {
+      } else if (result.skinRank <= 10 || result.overallRank <= 10) {
         audioManager.playGameOver();
       }
     }
-  }, [score, currentSkin.id, hasInitialized]);
+  }, [score, currentSkin.id, mounted]);
   
   if (!mounted || typeof document === 'undefined') {
     return null;
@@ -78,20 +72,9 @@ const GameOverModal: React.FC<GameOverModalProps> = ({ score, onRestart }) => {
               <motion.div
                 key={i}
                 className="absolute"
-                style={{
-                  left: `${20 + i * 15}%`,
-                  top: `${-10 + Math.sin(i) * 10}px`,
-                }}
-                animate={{
-                  y: [0, -10, 0],
-                  rotate: [0, 360],
-                  scale: [1, 1.2, 1],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: i * 0.2,
-                }}
+                style={{ left: `${20 + i * 15}%`, top: `${-10 + Math.sin(i) * 10}px` }}
+                animate={{ y: [0, -10, 0], rotate: [0, 360], scale: [1, 1.2, 1] }}
+                transition={{ duration: 2, repeat: Infinity, delay: i * 0.2 }}
               >
                 <Star className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-400 fill-yellow-400" />
               </motion.div>
@@ -120,14 +103,14 @@ const GameOverModal: React.FC<GameOverModalProps> = ({ score, onRestart }) => {
             <div className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
               {score.toLocaleString()}
             </div>
-            {isNewRecord && (
+            {savedResult && (savedResult.overallRank <= 10 || savedResult.skinRank <= 10) && (
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
                 className="text-sm sm:text-base font-semibold text-yellow-600"
               >
-                {newRecordRank === 1 ? t('new_record') : t('new_entry')}
+                {(savedResult.isOverallNewRecord || savedResult.isSkinNewRecord) ? t('new_record') : t('new_entry')}
               </motion.div>
             )}
           </motion.div>
@@ -140,15 +123,13 @@ const GameOverModal: React.FC<GameOverModalProps> = ({ score, onRestart }) => {
             className="mb-4 sm:mb-6"
           >
             <Leaderboard 
-              entries={leaderboard} 
               currentScore={score}
-              newRecordRank={newRecordRank}
+              newRecord={savedResult}
+              newRecordSkinId={currentSkin.id}
             />
           </motion.div>
           
-          <motion.div
-            className='flex flex-row gap-2 justify-center'
-          >
+          <motion.div className='flex flex-row gap-2 justify-center'>
             <motion.button
               onClick={() => setTransparent(prev => !prev)}
               className="flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-xl font-semibold shadow-lg hover:from-blue-600 hover:to-indigo-600 transition-all duration-75 mx-auto"

@@ -13,6 +13,8 @@
     "merge_path": "Merge Path",
     "merge_path_description": "This is the complete merge path for the current skin. Merge two identical items to create the next item in the sequence.",
     "leaderboard": "Leaderboard",
+    "leaderboard_overall": "Overall",
+    "leaderboard_skin": "By Skin",
     "top_scores": "Top {{count}} Scores",
     "no_scores_yet": "No scores yet",
     "new_record": "New Record!",
