@@ -26,6 +26,8 @@
     "secret_achievement": "Secret Achievement",
     "secret_achievement_desc": "Unlock this to see the details.",
     "unlocked_on": "Unlocked: {{date}}",
+    "mania_mode": "Mania Mode",
+    "mania_mode_desc": "More mechanics, more fun!",
     "skins": [
       {
         "id": "mushroom",

@@ -98,6 +98,11 @@ class AudioManager {
         this.playChord([523, 659, 784, 1047], 0.5, 0.2);
         setTimeout(() => this.playChord([659, 784, 1047, 1319], 0.3, 0.15), 200);
         break;
+      case 'mania':
+        // 播放Mania模式音效
+        this.playChord([440, 554, 659], 0.2, 0.25);
+        setTimeout(() => this.playChord([554, 659, 880], 0.2, 0.2), 150);
+        break;
       default:
         console.warn(`Unknown sound: ${soundName}`);
     }
@@ -137,6 +142,10 @@ class AudioManager {
 
   public playMerge() {
     this.play('merge');
+  }
+
+  public playMania() {
+    this.play('mania');
   }
 }
 

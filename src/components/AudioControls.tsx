@@ -103,19 +103,23 @@ const AudioControls: React.FC = () => {
                 <span className="text-sm font-medium text-gray-700">
                   音效
                 </span>
-                <motion.button
+                <motion.div
                   onClick={toggleAudio}
-                  className={`w-12 h-6 rounded-full relative transition-colors duration-200 ${
+                  className={`w-10 h-6 sm:w-12 sm:h-6 flex items-center rounded-full p-1 transition-colors duration-300 cursor-pointer ${
                     isEnabled ? 'bg-gradient-to-r from-green-500 to-teal-500' : 'bg-gray-300'
                   }`}
                   whileTap={{ scale: 0.95 }}
                 >
                   <motion.div
-                    className="w-5 h-5 bg-white rounded-full shadow-md absolute top-0.5"
-                    animate={{ x: isEnabled ? 32 : 2 }}
-                    transition={{ duration: 0.2 }}
+                    className="w-4 h-4 bg-white rounded-full shadow-md"
+                    layout
+                    transition={{ type: 'spring', stiffness: 700, damping: 30 }}
+                    style={{ 
+                      marginLeft: isEnabled ? 'auto' : '0',
+                      marginRight: isEnabled ? '0' : 'auto',
+                    }}
                   />
-                </motion.button>
+                </motion.div>
               </div>
               
               {isEnabled && (

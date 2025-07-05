@@ -20,4 +20,6 @@ export interface SkinContextType {
   currentSkin: SkinConfig;
   availableSkins: SkinConfig[];
   changeSkin: (skinId: string) => void;
+  maniaMode: boolean;
+  toggleManiaMode: () => void;
 }

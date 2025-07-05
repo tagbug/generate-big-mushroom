@@ -26,6 +26,8 @@
     "secret_achievement": "秘密成就",
     "secret_achievement_desc": "解锁后才能查看详情",
     "unlocked_on": "解锁于: {{date}}",
+    "mania_mode": "狂热模式",
+    "mania_mode_desc": "更多机制，更多乐趣！",
     "skins": [
       {
         "id": "mushroom",
