@@ -16,7 +16,7 @@ const MergePath: React.FC<MergePathProps> = ({ className = '' }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const { t } = useTranslation();
-  const { currentSkin } = useSkin();
+  const { currentSkin, maniaMode } = useSkin();
   const { getItemName } = useI18nSkin();
 
   useEffect(() => {
@@ -134,7 +134,10 @@ const MergePath: React.FC<MergePathProps> = ({ className = '' }) => {
               <p className="text-xs sm:text-sm text-gray-600 mb-2 sm:mb-4">
                 {t('merge_path_description')}
               </p>
-              
+              {maniaMode && <p className="text-xs sm:text-sm text-orange-500 mb-2 sm:mb-4">
+                {t('merge_path_mania_description')}
+              </p>}
+
               {/* 使用滚动容器来适应不同屏幕尺寸 */}
               <div className="overflow-x-auto">
                 <div className="flex items-center justify-start gap-1 sm:gap-2 min-w-max px-1 sm:px-2">

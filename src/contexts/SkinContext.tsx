@@ -22,6 +22,7 @@ interface SkinProviderProps {
 export const SkinProvider: React.FC<SkinProviderProps> = ({ children }) => {
   const [currentSkin, setCurrentSkin] = useState<SkinConfig>(AVAILABLE_SKINS[0]);
   const [maniaMode, setManiaMode] = useState(false);
+  const [reduceManiaEffect, setReduceManiaEffect] = useState(false);
 
   useEffect(() => {
     // 从本地存储加载皮肤设置
@@ -59,6 +60,8 @@ export const SkinProvider: React.FC<SkinProviderProps> = ({ children }) => {
     changeSkin,
     maniaMode,
     toggleManiaMode,
+    reduceManiaEffect,
+    setReduceManiaEffect,
   };
 
   return (

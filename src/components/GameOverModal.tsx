@@ -13,9 +13,10 @@ import { audioManager } from '@/utils/audioManager';
 interface GameOverModalProps {
   score: number;
   onRestart: () => void;
+  noSave?: boolean;
 }
 
-const GameOverModal: React.FC<GameOverModalProps> = ({ score, onRestart }) => {
+const GameOverModal: React.FC<GameOverModalProps> = ({ score, onRestart, noSave = false }) => {
   const { t } = useTranslation();
   const { currentSkin } = useSkin();
   const [savedResult, setSavedResult] = useState<ScoreSavedResult>();
@@ -28,6 +29,10 @@ const GameOverModal: React.FC<GameOverModalProps> = ({ score, onRestart }) => {
   }, []);
 
   useEffect(() => {
+    if (noSave) {
+      hasSavedScore.current = true;
+      return;
+    }
     // The ref ensures this effect runs only once per modal instance
     if (mounted && !hasSavedScore.current) {
       const result = saveScore(score, currentSkin.id);
@@ -103,6 +108,11 @@ const GameOverModal: React.FC<GameOverModalProps> = ({ score, onRestart }) => {
             <div className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
               {score.toLocaleString()}
             </div>
+            {noSave && (
+              <div className="text-sm sm:text-base font-semibold text-gray-500">
+                {t('no_save_score')}
+              </div>
+            )}
             {savedResult && (savedResult.overallRank <= 10 || savedResult.skinRank <= 10) && (
               <motion.div
                 initial={{ opacity: 0, y: 10 }}

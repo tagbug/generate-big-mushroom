@@ -11,16 +11,18 @@ import NextPreview from './NextPreview';
 import GameOverModal from './GameOverModal';
 import SkinSelector from './SkinSelector';
 import MergePath from './MergePath';
+import ComboMeter from './ComboMeter';
+import ComboEffects from './ComboEffects';
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from '@/game/constant';
 
 const GameContainer = () => {
-  const { currentSkin } = useSkin();
+  const { currentSkin, maniaMode, reduceManiaEffect } = useSkin();
   const sceneRef = useRef<HTMLDivElement>(null);
   const renderRef = useRef<Matter.Render | null>(null);
   const runnerRef = useRef<Matter.Runner | null>(null);
   const [scale, setScale] = useState(1);
 
-  const { score, isGameOver, addFruit, nextFruit, resetGame, showGhostFruit, hideGhostFruit, updateGhostFruitPosition } = useGameLogic(sceneRef);
+  const { score, isGameOver, addFruit, nextFruit, resetGame, showGhostFruit, hideGhostFruit, updateGhostFruitPosition, comboCount, timeToDecay } = useGameLogic(sceneRef);
 
   useEffect(() => {
     const handleResize = () => {
@@ -70,7 +72,7 @@ const GameContainer = () => {
         runnerRef.current = null;
       }
     };
-  }, [currentSkin]); // 依赖于当前皮肤
+  }, [currentSkin, maniaMode]); // 依赖于当前皮肤和模式
 
   const getEventX = (
     event: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>,
@@ -137,7 +139,7 @@ const GameContainer = () => {
       {/* Header with game stats - 响应式设计 */}
       <div className="relative z-20 flex flex-row sm:flex-row justify-between items-center gap-2 sm:gap-6 mb-3 sm:mb-6 px-2 sm:px-8 py-2 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20">
         <div className="flex-shrink-0">
-          <Scoreboard score={score} />
+          <Scoreboard score={Math.floor(score)} comboCount={maniaMode ? comboCount : 0} />
         </div>
         <div className="flex flex-row sm:flex-row items-center gap-2 sm:gap-4">
           <NextPreview fruits={nextFruit} />
@@ -147,6 +149,15 @@ const GameContainer = () => {
           <MergePath />
         </div>
       </div>
+
+      {/* Combo Meter */}
+      {maniaMode && (
+        <ComboMeter 
+          comboCount={comboCount} 
+          timeToDecay={timeToDecay}
+          maxTime={100 + (3000 - 100) * Math.exp(-0.1 * (comboCount - 1))}
+        />
+      )}
       
       {/* Game canvas container - 使用flex布局优化大屏幕显示 */}
       <div
@@ -196,7 +207,10 @@ const GameContainer = () => {
         <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-white/10 pointer-events-none rounded-b-2xl"></div>
       </div>
       
-      {isGameOver && <GameOverModal score={score} onRestart={handleRestart} />}
+      {isGameOver && <GameOverModal score={Math.floor(score)} onRestart={handleRestart} noSave={maniaMode} />}
+      
+      {/* Combo Effects */}
+      {maniaMode && !reduceManiaEffect && <ComboEffects comboCount={comboCount} />}
     </div>
   );
 };

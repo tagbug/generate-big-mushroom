@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
@@ -10,8 +9,6 @@ import { useSkin } from '@/contexts/SkinContext';
 import { useAchievements } from '@/contexts/AchievementContext';
 import { audioManager } from '@/utils/audioManager';
 import { LEFT_BOUNDARY, RIGHT_BOUNDARY, GAME_OVER_LINE_Y } from '@/game/constant';
-
-
 
 // 根据水果半径计算边界限制
 const getBoundaryLimits = (fruitRadius: number) => {
@@ -35,7 +32,7 @@ const hexToRgba = (hex: string, alpha: number) => {
 };
 
 export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) => {
-  const { currentSkin } = useSkin();
+  const { currentSkin, maniaMode } = useSkin();
   const { unlockAchievement } = useAchievements();
   const [score, setScore] = useState(0);
   const [isGameOver, setIsGameOver] = useState(false);
@@ -45,7 +42,14 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
   const ghostFruitBodyRef = useRef<Matter.Body | null>(null);
   const mergeCountRef = useRef(0);
 
-  // 监听分数变化以解锁成就
+  // Mania Mode: Combo state
+  const [comboCount, setComboCount] = useState(0);
+  const [timeToDecay, setTimeToDecay] = useState(0);
+  const comboDecayTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const decayProgressBarIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const comboStarterTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const mergesInStarterWindow = useRef(0);
+
   useEffect(() => {
     if (score >= 1000) unlockAchievement('reach_1000_score');
     if (score >= 5000) unlockAchievement('reach_5000_score');
@@ -148,10 +152,20 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
     setIsGameOver(false);
     setScore(0);
     mergeCountRef.current = 0;
+
+    // 清理所有计时器和状态
+    setComboCount(0);
+    if (comboDecayTimeoutRef.current) clearTimeout(comboDecayTimeoutRef.current);
+    if (decayProgressBarIntervalRef.current) clearInterval(decayProgressBarIntervalRef.current);
+    if (comboStarterTimeoutRef.current) clearTimeout(comboStarterTimeoutRef.current);
+    mergesInStarterWindow.current = 0;
+    comboStarterTimeoutRef.current = null;
+    setTimeToDecay(0);
+
     setNextFruit([availableFruits[Math.floor(Math.random() * availableFruits.length)], availableFruits[Math.floor(Math.random() * availableFruits.length)]]);
-    const fruitsToRemove = world.bodies.filter(body => !body.isStatic);
+    const fruitsToRemove = world.bodies.filter(body => !body.isStatic); 
     Matter.World.remove(world, fruitsToRemove);
-  }, [currentSkin]);
+  }, [currentSkin.id]);
 
   const addFruit = useCallback((x: number) => {
     if (isGameOver) return;
@@ -167,9 +181,8 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
     
     // 随机选择前5个水果中的一个作为下一个水果
     setNextFruit(prev => [prev[1], availableFruits[Math.floor(Math.random() * availableFruits.length)]]);
-  }, [nextFruit, isGameOver, currentSkin]);
+  }, [nextFruit, isGameOver, currentSkin.type]);
 
-  // 当皮肤改变时重置游戏并检查成就
   useEffect(() => {
     resetGame();
     const playedSkins = JSON.parse(localStorage.getItem('playedSkins') || '[]');
@@ -180,7 +193,7 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
     if (playedSkins.length >= 3) {
       unlockAchievement('play_3_skins');
     }
-  }, [currentSkin.id, unlockAchievement, resetGame]);
+  }, [currentSkin.id, maniaMode, unlockAchievement, resetGame]);
 
   useEffect(() => {
     if (ghostFruitBodyRef.current) {
@@ -188,9 +201,41 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
     }
   }, [nextFruit, showGhostFruit]);
 
+  // Combo 主衰减计时器逻辑 (激活阶段)
+  useEffect(() => {
+    if (comboDecayTimeoutRef.current) clearTimeout(comboDecayTimeoutRef.current);
+    if (decayProgressBarIntervalRef.current) clearInterval(decayProgressBarIntervalRef.current);
+    
+    if (!maniaMode || comboCount === 0) {
+      setTimeToDecay(0);
+      return;
+    }
+  
+    const decayInterval = 100 + (3000 - 100) * Math.exp(-0.1 * (comboCount - 1));
+    setTimeToDecay(decayInterval);
+  
+    comboDecayTimeoutRef.current = setTimeout(() => {
+      setComboCount(c => Math.max(0, c - 1));
+    }, decayInterval);
+  
+    let remainingTime = decayInterval;
+    const tickRate = 10;
+    decayProgressBarIntervalRef.current = setInterval(() => {
+      remainingTime = Math.max(0, remainingTime - tickRate);
+      setTimeToDecay(remainingTime);
+    }, tickRate);
+  
+    return () => {
+      if (comboDecayTimeoutRef.current) clearTimeout(comboDecayTimeoutRef.current);
+      if (decayProgressBarIntervalRef.current) clearInterval(decayProgressBarIntervalRef.current);
+    };
+  }, [comboCount, maniaMode]);
+
   useEffect(() => {
     const handleCollision = (event: Matter.IEventCollision<Matter.Engine>) => {
       if (isGameOver) return;
+
+      let mergeCountInFrame = 0;
 
       event.pairs.forEach((pair) => {
         const { bodyA, bodyB } = pair;
@@ -212,25 +257,34 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
 
         if (fruitA && fruitB && fruitA.label === fruitB.label) {
           const currentFruitIndex = currentSkin.items.findIndex(f => f.label === fruitA.label);
-          if (currentFruitIndex < currentSkin.items.length - 1) {
-            const nextFruitInLine = currentSkin.items[currentFruitIndex + 1];
-            Matter.World.remove(world, [bodyA, bodyB]);
-            // 计算新水果的位置并应用边界限制
-            const newX = (bodyA.position.x + bodyB.position.x) / 2;
-            const newY = (bodyA.position.y + bodyB.position.y) / 2;
-            const clampedX = clampToBoundary(newX, nextFruitInLine.radius);
-            const newFruitBody = createPhysicsBody(
-              clampedX,
-              newY,
-              nextFruitInLine,
-              currentSkin.type
-            );
-            (newFruitBody.plugin as any).isActivated = true;
-            Matter.World.add(world, newFruitBody);
-            setScore((prevScore) => prevScore + fruitA.score);
-            
+          if (maniaMode || currentFruitIndex < currentSkin.items.length - 1) {
+            mergeCountInFrame++;
+            if (maniaMode && currentFruitIndex === currentSkin.items.length - 1) {
+              // Mania模式并且是最大的水果：如果是最大的水果，直接消除
+              Matter.World.remove(world, [bodyA, bodyB]);
+            } else {
+              // 其他情况
+              const nextFruitInLine = currentSkin.items[currentFruitIndex + 1];
+              Matter.World.remove(world, [bodyA, bodyB]);
+              // 计算新水果的位置并应用边界限制
+              const newX = (bodyA.position.x + bodyB.position.x) / 2;
+              const newY = (bodyA.position.y + bodyB.position.y) / 2;
+              const clampedX = clampToBoundary(newX, nextFruitInLine.radius);
+              const newFruitBody = createPhysicsBody(
+                clampedX,
+                newY,
+                nextFruitInLine,
+                currentSkin.type
+              );
+              (newFruitBody.plugin as any).isActivated = true;
+              Matter.World.add(world, newFruitBody);
+              setScore((prevScore) => {
+                const currentCombo = comboCount; // 在函数更新内部获取最新的state
+                return prevScore + fruitA.score * (maniaMode ? 1 + currentCombo * 0.1 : 1)
+              });
+            }
             // 播放合成音效
-            audioManager.play('merge');
+            audioManager.playComboMerge(comboCount);
           }
         }
       });
@@ -276,6 +330,44 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
           unlockAchievement('8_mushrooms');
         }
       }
+      
+      if (mergeCountInFrame > 0) {
+        mergeCountRef.current += mergeCountInFrame;
+
+        // Mania Mode 核心逻辑
+        if (maniaMode) {
+          if (comboCount > 0) {
+            // 阶段2: Combo 已激活，直接累加
+            setComboCount(c => c + mergeCountInFrame);
+          } else {
+            // 阶段1: Combo 未激活，尝试启动
+            mergesInStarterWindow.current += mergeCountInFrame;
+            
+            // 如果 "启动计时器" 还未运行，则启动它
+            if (!comboStarterTimeoutRef.current) {
+                comboStarterTimeoutRef.current = setTimeout(() => {
+                    // 1秒计时结束，如果仍未满足启动条件，则重置
+                    mergesInStarterWindow.current = 0;
+                    comboStarterTimeoutRef.current = null; // 标记计时器已结束
+                }, 1000);
+            }
+
+            // 在每次合并时都检查是否满足启动条件 (合并次数 >= 2)
+            if (mergesInStarterWindow.current >= 2) {
+                // 成功启动！
+                // 规则: Combo = 合成次数 - 1
+                setComboCount(mergesInStarterWindow.current - 1);
+
+                // 清理启动器，因为它已完成使命
+                if (comboStarterTimeoutRef.current) {
+                    clearTimeout(comboStarterTimeoutRef.current);
+                    comboStarterTimeoutRef.current = null;
+                }
+                mergesInStarterWindow.current = 0;
+            }
+          }
+        }
+      }
     };
 
     const checkGameOver = () => {
@@ -303,7 +395,7 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
       Matter.Events.off(engine, 'collisionStart', handleCollision);
       Matter.Events.off(engine, 'afterUpdate', checkGameOver);
     };
-  }, [isGameOver, currentSkin, unlockAchievement]);
+  }, [isGameOver, currentSkin.id, currentSkin.items, currentSkin.type, maniaMode, comboCount, unlockAchievement]);
 
-  return { score, isGameOver, addFruit, nextFruit, resetGame, showGhostFruit, hideGhostFruit, updateGhostFruitPosition };
+  return { score, isGameOver, addFruit, nextFruit, resetGame, showGhostFruit, hideGhostFruit, updateGhostFruitPosition, comboCount, timeToDecay };
 };

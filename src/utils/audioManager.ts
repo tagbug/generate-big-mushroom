@@ -144,6 +144,32 @@ class AudioManager {
     this.play('merge');
   }
 
+  public playComboMerge(comboCount: number) {
+    if (!this.enabled || typeof window === 'undefined') return;
+
+    this.ensureInitialized();
+
+    // 确保音频上下文已启动
+    if (this.audioContext && this.audioContext.state === 'suspended') {
+      this.audioContext.resume();
+    }
+
+    // 根据combo数量调整音效
+    const baseFrequencies = [523, 659, 784];
+    const pitchMultiplier = 1 + Math.min(comboCount * 0.1, 1.25); // 最高提升1.25倍音调
+    const frequencies = baseFrequencies.map(f => f * pitchMultiplier);
+    
+    // 持续时间随combo减少，变得更急促
+    const baseDuration = 0.3;
+    const duration = Math.max(baseDuration - comboCount * 0.01, 0.15);
+    
+    // 音量随combo增加
+    const baseVolume = 0.15;
+    const volume = Math.min(baseVolume + comboCount * 0.01, 0.3);
+    
+    this.playChord(frequencies, duration, volume);
+  }
+
   public playMania() {
     this.play('mania');
   }

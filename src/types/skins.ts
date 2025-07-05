@@ -22,4 +22,6 @@ export interface SkinContextType {
   changeSkin: (skinId: string) => void;
   maniaMode: boolean;
   toggleManiaMode: () => void;
+  reduceManiaEffect: boolean; // 是否减少 Mania 模式的效果
+  setReduceManiaEffect: React.Dispatch<React.SetStateAction<boolean>>;
 }
