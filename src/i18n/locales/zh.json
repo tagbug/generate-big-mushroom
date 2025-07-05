@@ -10,13 +10,19 @@
     "restart": "重新开始",
     "selectSkin": "选择皮肤",
     "merge_path": "合成路线",
-    "merge_path_description": "这是当前皮肤的完整合成路线。合并两个相同的物品可以创造出序列中的下一个物品。",
+    "merge_path_description": "这是当前皮肤的完整合成路线合并两个相同的物品可以创造出序列中的下一个物品",
     "leaderboard": "排行榜",
     "top_scores": "前{{count}}名",
     "no_scores_yet": "暂无记录",
     "new_record": "新纪录！",
     "new_entry": "新高分！",
     "and_more": "...还有{{count}}个",
+    "achievements": "成就",
+    "achievement_unlocked": "成就已解锁！",
+    "progress": "进度",
+    "secret_achievement": "秘密成就",
+    "secret_achievement_desc": "解锁后才能查看详情",
+    "unlocked_on": "解锁于: {{date}}",
     "skins": [
       {
         "id": "mushroom",
@@ -87,6 +93,74 @@
           { "label": "galaxy", "name": "银河" },
           { "label": "universe", "name": "宇宙" }
         ]
+      },
+      {
+        "id": "small-mushroom",
+        "name": "小蘑菇",
+        "desc": "小小的蘑菇！",
+        "items": [
+          {"label": "candy", "name": "糖果" },
+          { "label": "cookie", "name": "饼干" },
+          { "label": "donut", "name": "甜甜圈" },
+          { "label": "shrimp", "name": "天妇罗" },
+          { "label": "fish_cake", "name": "鱼板" },
+          { "label": "pride_flag", "name": "彩虹" },
+          { "label": "trans_flag", "name": "跨子" },
+          { "label": "brown_mushroom", "name": "小蘑菇" },
+          { "label": "red_mushroom", "name": "小小蘑菇" }
+        ]
+      }
+    ],
+    "achievement_items": [
+      {
+        "id": "first_merge",
+        "name": "第一次合成",
+        "description": "完成你的第一次合成"
+      },
+      {
+        "id": "reach_1000_score",
+        "name": "一千分！",
+        "description": "在一局游戏中达到1000分"
+      },
+      {
+        "id": "reach_5000_score",
+        "name": "五千分！",
+        "description": "在一局游戏中达到5000分"
+      },
+      {
+        "id": "unlock_watermelon",
+        "name": "水果之王",
+        "description": "在“水果”皮肤中合成到西瓜"
+      },
+      {
+        "id": "unlock_diamond",
+        "name": "钻石之光",
+        "description": "在“Emoji”皮肤中合成到钻石"
+      },
+      {
+        "id": "play_3_skins",
+        "name": "皮肤探索者",
+        "description": "尝试3种不同的皮肤"
+      },
+      {
+        "id": "game_over_5_times",
+        "name": "游戏达人",
+        "description": "玩过5局游戏"
+      },
+      {
+        "id": "unlock_red_mushroom",
+        "name": "大蘑菇！",
+        "description": "你发现了神秘大蘑菇！"
+      },
+      {
+        "id": "5_mushrooms",
+        "name": "蘑菇大师！",
+        "description": "在一局游戏中合成5只大蘑菇！"
+      },
+      {
+        "id": "unlock_small_mushroom",
+        "name": "小小的菇！",
+        "description": "你发现了小小蘑菇！"
       }
     ]
   }

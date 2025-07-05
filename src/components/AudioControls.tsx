@@ -62,10 +62,9 @@ const AudioControls: React.FC = () => {
   return (
     <div className="relative">
       <motion.div
-        className="flex items-center gap-1 sm:gap-2 bg-white/80 backdrop-blur-sm rounded-lg p-1 sm:p-2 shadow-lg"
+        className="flex items-center gap-1 sm:gap-2 bg-white/80 backdrop-blur-sm rounded-lg p-1 sm:p-2 shadow-lg duration-75"
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.5 }}
       >
         <motion.button
           onClick={toggleAudio}

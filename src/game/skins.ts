@@ -82,11 +82,32 @@ export const GEOMETRIC_SKIN: SkinConfig = {
   ],
 };
 
+// 合成小蘑菇！
+export const SMALL_MUSHROOM_SKIN: SkinConfig = {
+  id: 'small-mushroom',
+  name: 'Small Mushroom Mania', // 这将被 i18n 替换
+  description: 'Merge small mushrooms!', // 这将被 i18n 替换
+  type: 'emoji',
+  items: [
+    { label: 'candy', radius: 50, score: 1, emoji: '🍬' },
+    { label: 'cookie', radius: 40, score: 2, emoji: '🍪' },
+    { label: 'donut', radius: 35, score: 3, emoji: '🍩' },
+    { label: 'shrimp', radius: 30, score: 4, emoji: '🍤' },
+    { label: 'fish_cake', radius: 25, score: 5, emoji: '🍥' },
+    { label: 'pride_flag', radius: 20, score: 6, emoji: '🏳️‍🌈' },
+    { label: 'trans_flag', radius: 15, score: 7, emoji: '🏳️‍⚧️' },
+    { label: 'brown_mushroom', radius: 10, score: 9, emoji: '🍄‍🟫' },
+    { label: 'red_mushroom', radius: 5, score: 11, emoji: '🍄' },
+  ].map(item => ({ ...item, color: "#FFFFFF" })),
+};
+
+
 export const AVAILABLE_SKINS: SkinConfig[] = [
   MUSHROOM_SKIN,
   FRUITS_SKIN,
   EMOJI_SKIN,
   GEOMETRIC_SKIN,
+  SMALL_MUSHROOM_SKIN,
 ];
 
 export const getSkinById = (id: string): SkinConfig => {

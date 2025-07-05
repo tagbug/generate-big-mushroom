@@ -14,10 +14,9 @@ const LanguageSwitcher = () => {
 
   return (
     <motion.div 
-      className="flex items-center gap-1 sm:gap-2 bg-white/80 backdrop-blur-sm rounded-lg p-0.5 sm:p-2 shadow-lg border border-white/20"
+      className="flex items-center gap-1 sm:gap-2 bg-white/80 backdrop-blur-sm rounded-lg p-0.5 sm:p-2 shadow-lg border border-white/20 duration-75"
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.5 }}
     >
       <Globe size={16} className="sm:w-5 sm:h-5 text-gray-600" />
       <div className="flex items-center gap-1">

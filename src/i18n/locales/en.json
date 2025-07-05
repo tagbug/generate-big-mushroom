@@ -17,6 +17,12 @@
     "new_record": "New Record!",
     "new_entry": "New High Score!",
     "and_more": "...and {{count}} more",
+    "achievements": "Achievements",
+    "achievement_unlocked": "Achievement Unlocked!",
+    "progress": "Progress",
+    "secret_achievement": "Secret Achievement",
+    "secret_achievement_desc": "Unlock this to see the details.",
+    "unlocked_on": "Unlocked: {{date}}",
     "skins": [
       {
         "id": "mushroom",
@@ -87,6 +93,74 @@
           { "label": "galaxy", "name": "Galaxy" },
           { "label": "universe", "name": "Universe" }
         ]
+      },
+      {
+        "id": "small-mushroom",
+        "name": "Small Mushrooms",
+        "desc": "Merge small mushrooms!",
+        "items": [
+          { "label": "candy", "name": "Candy" },
+          { "label": "cookie", "name": "Cookie" },
+          { "label": "donut", "name": "Donut" },
+          { "label": "shrimp", "name": "Shrimp" },
+          { "label": "fish_cake", "name": "Fish Cake" },
+          { "label": "pride_flag", "name": "Pride Flag" },
+          { "label": "trans_flag", "name": "Trans Flag" },
+          { "label": "brown_mushroom", "name": "Small Brown Mushroom" },
+          { "label": "red_mushroom", "name": "Small Red Mushroom" }
+        ]
+      }
+    ],
+    "achievement_items": [
+      {
+        "id": "first_merge",
+        "name": "First Step",
+        "description": "Perform your first merge."
+      },
+      {
+        "id": "reach_1000_score",
+        "name": "Score Beginner",
+        "description": "Reach a score of 1,000."
+      },
+      {
+        "id": "reach_5000_score",
+        "name": "Score Master",
+        "description": "Reach a score of 5,000."
+      },
+      {
+        "id": "unlock_watermelon",
+        "name": "Fruit King",
+        "description": "Successfully merge a Watermelon in Classic Fruits skin."
+      },
+      {
+        "id": "unlock_diamond",
+        "name": "Emoji Tycoon",
+        "description": "Successfully merge a Diamond in Emoji Faces skin."
+      },
+      {
+        "id": "play_3_skins",
+        "name": "Skin Explorer",
+        "description": "Play with 3 different skins."
+      },
+      {
+        "id": "game_over_5_times",
+        "name": "Persistent Player",
+        "description": "Experience game over 5 times."
+      },
+      {
+        "id": "unlock_red_mushroom",
+        "name": "Mushroom Fan",
+        "description": "You found the secret mushroom!"
+      },
+      {
+        "id": "5_mushrooms",
+        "name": "Mushroom Master!",
+        "description": "Merge 5 big mushrooms in a single game."
+      },
+      {
+        "id": "unlock_small_mushroom",
+        "name": "Small Mushroom Enthusiast",
+        "description": "You found the small mushroom!"
       }
     ]
   }

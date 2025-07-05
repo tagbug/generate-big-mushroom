@@ -143,7 +143,7 @@ const GameOverModal: React.FC<GameOverModalProps> = ({ score, onRestart }) => {
           
           <motion.button
             onClick={onRestart}
-            className="flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-green-500 to-teal-500 text-white rounded-xl font-semibold shadow-lg hover:from-green-600 hover:to-teal-600 transition-all duration-50 mx-auto"
+            className="flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-green-500 to-teal-500 text-white rounded-xl font-semibold shadow-lg hover:from-green-600 hover:to-teal-600 transition-all duration-75 mx-auto"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             initial={{ opacity: 0, y: 10 }}

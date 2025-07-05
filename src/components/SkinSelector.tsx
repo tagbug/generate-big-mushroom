@@ -22,7 +22,7 @@ const SkinSelector: React.FC = () => {
     <div className="relative">
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-1 sm:gap-2 px-1 sm:px-4 py-1 sm:py-3 bg-gradient-to-r from-indigo-500 to-blue-500 text-white rounded-lg shadow-md hover:from-indigo-600 hover:to-blue-600 transition-all duration-50"
+        className="flex items-center gap-1 sm:gap-2 px-1 sm:px-4 py-1 sm:py-3 bg-gradient-to-r from-indigo-500 to-blue-500 text-white rounded-lg shadow-md hover:from-indigo-600 hover:to-blue-600 transition-all duration-75"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
