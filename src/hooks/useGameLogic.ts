@@ -272,6 +272,9 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
         if (mushroomCount >= 5) {
           unlockAchievement('5_mushrooms');
         }
+        if (mushroomCount >= 8) {
+          unlockAchievement('8_mushrooms');
+        }
       }
     };
 

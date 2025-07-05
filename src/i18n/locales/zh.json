@@ -158,6 +158,11 @@
         "description": "在一局游戏中合成5只大蘑菇！"
       },
       {
+        "id": "8_mushrooms",
+        "name": "蘑菇之王",
+        "description": "在一局游戏中合成8只大蘑菇！"
+      },
+      {
         "id": "unlock_small_mushroom",
         "name": "小小的菇！",
         "description": "你发现了小小蘑菇！"

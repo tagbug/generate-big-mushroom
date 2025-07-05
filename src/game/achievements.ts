@@ -58,6 +58,13 @@ export const ALL_ACHIEVEMENTS: Achievement[] = [
     isSecret: true,
   },
   {
+    id: '8_mushrooms',
+    name: 'King of Mushroom',
+    description: 'Merge 8 mushrooms in a single game.',
+    icon: '🍄',
+    isSecret: true,
+  },
+  {
     id: 'unlock_small_mushroom',
     name: 'Small Mushroom Enthusiast',
     description: 'You found the small mushroom!',
