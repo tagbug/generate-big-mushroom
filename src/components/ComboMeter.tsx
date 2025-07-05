@@ -73,7 +73,7 @@ const ComboMeter: React.FC<ComboMeterProps> = ({ comboCount, timeToDecay, maxTim
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
-          className="w-[calc(100%_-_theme(space.20))] max-w-xs sm:max-w-md mx-auto -mt-1 mb-2 mx:-mt-3 mx:mb-3"
+          className="w-[calc(100%_-_theme(space.20))] max-w-xs sm:max-w-md mx-auto -mt-1 mb-2 sm:-mt-3 sm:mb-3"
         >
           <motion.div 
             className={`${getBgColor()} backdrop-blur-sm rounded-lg ${getShadowIntensity()} ${getGlowColor()} py-1 px-2.5 flex items-center gap-4 transition-all duration-300`}
