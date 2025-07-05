@@ -8,6 +8,7 @@
     "gameOver": "Game Over",
     "yourScore": "Your Score: {{score}}",
     "restart": "Restart",
+    "review": "Review",
     "selectSkin": "Select Skin",
     "merge_path": "Merge Path",
     "merge_path_description": "This is the complete merge path for the current skin. Merge two identical items to create the next item in the sequence.",

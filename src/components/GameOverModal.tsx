@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
-import { RefreshCw, Trophy, Star, Award } from 'lucide-react';
+import { RefreshCw, Trophy, Star, Award, Eye } from 'lucide-react';
 import { getLeaderboard, saveScore, LeaderboardEntry } from '@/utils/leaderboard';
 import { useSkin } from '@/contexts/SkinContext';
 import Leaderboard from './Leaderboard';
@@ -21,9 +21,9 @@ const GameOverModal: React.FC<GameOverModalProps> = ({ score, onRestart }) => {
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
   const [isNewRecord, setIsNewRecord] = useState(false);
   const [newRecordRank, setNewRecordRank] = useState<number | undefined>();
-  const [hasPlayedSound, setHasPlayedSound] = useState(false);
   const [hasInitialized, setHasInitialized] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [transparent, setTransparent] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -57,8 +57,10 @@ const GameOverModal: React.FC<GameOverModalProps> = ({ score, onRestart }) => {
     <AnimatePresence>
       <motion.div 
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        animate={{ opacity: transparent ? 0 : 1 }}
         exit={{ opacity: 0 }}
+        // style={{ opacity: transparent ? 0 : 1 }}
+        onClick={() => setTransparent(prev => !prev)}
         className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-center z-100 p-4"
       >
         <motion.div 
@@ -66,6 +68,8 @@ const GameOverModal: React.FC<GameOverModalProps> = ({ score, onRestart }) => {
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.8, opacity: 0, y: 20 }}
           transition={{ type: "spring", duration: 0.5 }}
+          onClick={(e) => e.stopPropagation()} // 阻止点击事件冒泡
+          style={{ display: transparent ? 'none' : 'block' }}
           className="bg-white/95 backdrop-blur-md p-4 sm:p-6 md:p-8 rounded-2xl shadow-2xl text-center border border-white/20 max-w-md w-full max-h-[90vh] overflow-y-auto"
         >
           {/* Animated stars */}
@@ -142,17 +146,33 @@ const GameOverModal: React.FC<GameOverModalProps> = ({ score, onRestart }) => {
             />
           </motion.div>
           
-          <motion.button
-            onClick={onRestart}
-            className="flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-green-500 to-teal-500 text-white rounded-xl font-semibold shadow-lg hover:from-green-600 hover:to-teal-600 transition-all duration-75 mx-auto"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
+          <motion.div
+            className='flex flex-row gap-2 justify-center'
           >
-            <RefreshCw className="w-4 h-4 sm:w-5 sm:h-5" />
-            {t('restart')}
-          </motion.button>
+            <motion.button
+              onClick={() => setTransparent(prev => !prev)}
+              className="flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-xl font-semibold shadow-lg hover:from-blue-600 hover:to-indigo-600 transition-all duration-75 mx-auto"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <Eye className="w-4 h-4 sm:w-5 sm:h-5" />
+              {t('review')}
+            </motion.button>
+
+            <motion.button
+              onClick={onRestart}
+              className="flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-green-500 to-teal-500 text-white rounded-xl font-semibold shadow-lg hover:from-green-600 hover:to-teal-600 transition-all duration-75 mx-auto"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <RefreshCw className="w-4 h-4 sm:w-5 sm:h-5" />
+              {t('restart')}
+            </motion.button>
+          </motion.div>
         </motion.div>
       </motion.div>
     </AnimatePresence>,

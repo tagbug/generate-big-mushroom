@@ -11,10 +11,13 @@ import AchievementModal from '@/components/AchievementModal';
 import AchievementsButton from '@/components/AchievementsButton';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
+import LeaderboardModal from '@/components/LeaderboardModal';
+import LeaderboardButton from '@/components/LeaderboardButton';
 
 export default function Home() {
   const { t } = useTranslation();
   const [isAchievementModalOpen, setIsAchievementModalOpen] = useState(false);
+  const [isLeaderboardModalOpen, setIsLeaderboardModalOpen] = useState(false);
 
   return (
     <SkinProvider>
@@ -34,8 +37,11 @@ export default function Home() {
           </div>
           
           <div className="fixed top-4 right-4 z-[100] flex items-center gap-2">
+            <div className="flex items-center gap-1 sm:gap-2">
+              <AchievementsButton onClick={() => setIsAchievementModalOpen(true)} />
+              <LeaderboardButton onClick={() => setIsLeaderboardModalOpen(true)} />
+            </div>
             <AudioControls />
-            <AchievementsButton onClick={() => setIsAchievementModalOpen(true)} />
           </div>
 
           <main className="flex min-h-screen flex-col items-center p-10 sm:p-12 md:p-20 relative z-10">
@@ -66,6 +72,10 @@ export default function Home() {
           <AchievementModal 
             isOpen={isAchievementModalOpen}
             onClose={() => setIsAchievementModalOpen(false)}
+          />
+          <LeaderboardModal
+            isOpen={isLeaderboardModalOpen}
+            onClose={() => setIsLeaderboardModalOpen(false)}
           />
         </div>
       </AchievementProvider>

@@ -12,13 +12,15 @@ interface LeaderboardProps {
   currentScore?: number;
   newRecordRank?: number;
   className?: string;
+  hasTitle?: boolean;
 }
 
 const Leaderboard: React.FC<LeaderboardProps> = ({ 
   entries, 
   currentScore, 
   newRecordRank,
-  className = '' 
+  className = '',
+  hasTitle = true
 }) => {
   const { t, i18n } = useTranslation();
   const { currentSkin } = useSkin();
@@ -63,7 +65,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
 
   return (
     <div className={`bg-white/90 backdrop-blur-sm rounded-xl p-3 sm:p-4 shadow-lg border border-white/20 ${className}`}>
-      <div className="flex items-center justify-between mb-3 sm:mb-4">
+      {hasTitle && <div className="flex items-center justify-between mb-3 sm:mb-4">
         <h3 className="text-sm sm:text-lg font-semibold text-gray-800">
           {t('leaderboard')}
         </h3>
@@ -75,7 +77,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
             }
           </span>
         )}
-      </div>
+      </div>}
 
       {entries.length === 0 ? (
         <div className="text-center py-4 sm:py-6">
