@@ -71,7 +71,11 @@ const AchievementModal: React.FC<AchievementModalProps> = ({ isOpen, onClose }) 
   const unlockedCount = achievements.filter(a => a.unlocked).length;
   const totalCount = achievements.length;
 
-  return createPortal(
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
+  const modalContent = (
     <AnimatePresence>
       {isOpen && (
         <motion.div
@@ -121,9 +125,10 @@ const AchievementModal: React.FC<AchievementModalProps> = ({ isOpen, onClose }) 
           </motion.div>
         </motion.div>
       )}
-    </AnimatePresence>,
-    document.body
+    </AnimatePresence>
   );
+
+  return createPortal(modalContent, document.body);
 };
 
 export default AchievementModal;

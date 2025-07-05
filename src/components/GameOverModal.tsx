@@ -1,3 +1,4 @@
+'use client';
 
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -48,7 +49,7 @@ const GameOverModal: React.FC<GameOverModalProps> = ({ score, onRestart }) => {
     }
   }, [score, currentSkin.id, hasInitialized]);
   
-  if (!mounted) {
+  if (!mounted || typeof document === 'undefined') {
     return null;
   }
 

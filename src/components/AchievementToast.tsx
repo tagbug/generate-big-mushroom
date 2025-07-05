@@ -22,11 +22,11 @@ const AchievementToast: React.FC = () => {
     }
   }, [newlyUnlocked, clearNewlyUnlocked]);
 
-  if (newlyUnlocked.length === 0) {
+  if (newlyUnlocked.length === 0 || typeof window === 'undefined') {
     return null;
   }
 
-  return createPortal(
+  const toastContent = (
     <div className="fixed top-2 sm:top-4 right-2 sm:right-4 z-[9999]">
       <AnimatePresence>
         {newlyUnlocked.map((achievement, index) => (
@@ -55,9 +55,10 @@ const AchievementToast: React.FC = () => {
           </motion.div>
         ))}
       </AnimatePresence>
-    </div>,
-    document.body
+    </div>
   );
+
+  return createPortal(toastContent, document.body);
 };
 
 export default AchievementToast;

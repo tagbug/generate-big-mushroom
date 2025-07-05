@@ -10,6 +10,7 @@ const MAX_ENTRIES = 10;
 
 export const getLeaderboard = (): LeaderboardEntry[] => {
   try {
+    if (typeof window === 'undefined') return [];
     const data = localStorage.getItem(LEADERBOARD_KEY);
     return data ? JSON.parse(data) : [];
   } catch (error) {
@@ -20,6 +21,10 @@ export const getLeaderboard = (): LeaderboardEntry[] => {
 
 export const saveScore = (score: number, skinId: string): { isNewRecord: boolean; rank: number } => {
   try {
+    if (typeof window === 'undefined') {
+      return { isNewRecord: false, rank: MAX_ENTRIES + 1 };
+    }
+    
     const leaderboard = getLeaderboard();
     
     // 检查是否已经存在相同的分数记录（在最近的1秒内）
@@ -80,6 +85,7 @@ export const saveScore = (score: number, skinId: string): { isNewRecord: boolean
 
 export const clearLeaderboard = (): void => {
   try {
+    if (typeof window === 'undefined') return;
     localStorage.removeItem(LEADERBOARD_KEY);
   } catch (error) {
     console.error('Error clearing leaderboard:', error);

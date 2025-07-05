@@ -1,3 +1,5 @@
+'use client';
+
 import React, { Fragment, useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';

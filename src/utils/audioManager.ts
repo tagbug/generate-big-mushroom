@@ -2,21 +2,39 @@ class AudioManager {
   private enabled = true;
   private volume = 0.5;
   private audioContext: AudioContext | null = null;
+  private isInitialized = false;
 
   constructor() {
-    this.initializeAudio();
+    // 只在客户端环境中初始化
+    if (typeof window !== 'undefined') {
+      this.initializeAudio();
+    }
   }
 
   private initializeAudio() {
+    if (this.isInitialized) return;
+    
     try {
-      this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      if (typeof window !== 'undefined' && (window.AudioContext || (window as any).webkitAudioContext)) {
+        this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+        this.isInitialized = true;
+      }
     } catch (error) {
       console.warn('Web Audio API not supported', error);
     }
   }
 
+  private ensureInitialized() {
+    if (!this.isInitialized && typeof window !== 'undefined') {
+      this.initializeAudio();
+    }
+  }
+
   private playTone(frequency: number, duration: number, volume: number = 0.3) {
-    if (!this.enabled || !this.audioContext) return;
+    if (!this.enabled || typeof window === 'undefined') return;
+    
+    this.ensureInitialized();
+    if (!this.audioContext) return;
 
     try {
       const oscillator = this.audioContext.createOscillator();
@@ -40,7 +58,10 @@ class AudioManager {
   }
 
   private playChord(frequencies: number[], duration: number, volume: number = 0.2) {
-    if (!this.enabled || !this.audioContext) return;
+    if (!this.enabled || typeof window === 'undefined') return;
+    
+    this.ensureInitialized();
+    if (!this.audioContext) return;
 
     frequencies.forEach((freq, index) => {
       setTimeout(() => {
@@ -50,7 +71,9 @@ class AudioManager {
   }
 
   public play(soundName: string) {
-    if (!this.enabled) return;
+    if (!this.enabled || typeof window === 'undefined') return;
+
+    this.ensureInitialized();
 
     // 确保音频上下文已启动
     if (this.audioContext && this.audioContext.state === 'suspended') {

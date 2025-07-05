@@ -1,4 +1,6 @@
 
+'use client';
+
 import React, { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Fruit } from '@/types/fruits';
