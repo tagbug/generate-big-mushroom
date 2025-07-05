@@ -24,7 +24,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
   hasTitle = true
 }) => {
   const { t, i18n } = useTranslation();
-  const { availableSkins } = useSkin();
+  const { currentSkin, availableSkins } = useSkin();
   const { getSkinName } = useI18nSkin();
   const [isSmallScreen, setIsSmallScreen] = useState(false);
 
@@ -121,7 +121,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
           icon={<User size={16} />}
           onClick={() => {
             setSelectedTab('skin');
-            setFilter(newRecordSkinId || availableSkins[0].id);
+            setFilter(newRecordSkinId || currentSkin.id);
           }}
         />
       </div>

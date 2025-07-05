@@ -61,7 +61,6 @@ const LeaderboardModal: React.FC<LeaderboardModalProps> = ({ isOpen, onClose }) 
             {/* 排行榜 */}
             <div className="p-2 sm:p-4 flex-grow overflow-y-auto">
               <Leaderboard
-                entries={leaderboard}
                 hasTitle={false}
               />
             </div>
