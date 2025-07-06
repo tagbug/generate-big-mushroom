@@ -53,7 +53,15 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
   useEffect(() => {
     if (score >= 1000) unlockAchievement('reach_1000_score');
     if (score >= 5000) unlockAchievement('reach_5000_score');
+    if (score >= 10000) unlockAchievement('reach_10000_score');
+    if (score >= 50000) unlockAchievement('reach_50000_score');
   }, [score, unlockAchievement]);
+
+  useEffect(() => {
+    if (maniaMode) {
+      unlockAchievement('play_mania_mode');
+    }
+  }, [maniaMode, unlockAchievement]);
 
   const showGhostFruit = useCallback((x?: number) => {
     if (ghostFruitBodyRef.current) {
@@ -262,6 +270,7 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
             if (maniaMode && currentFruitIndex === currentSkin.items.length - 1) {
               // Mania模式并且是最大的水果：如果是最大的水果，直接消除
               Matter.World.remove(world, [bodyA, bodyB]);
+              unlockAchievement('merge_biggest');
             } else {
               // 其他情况
               const nextFruitInLine = currentSkin.items[currentFruitIndex + 1];
@@ -365,6 +374,16 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
                 }
                 mergesInStarterWindow.current = 0;
             }
+          }
+          // Combo 成就
+          if (comboCount >= 50) {
+            unlockAchievement('50_combos');
+          }
+          if (comboCount >= 100) {
+            unlockAchievement('100_combos');
+          }
+          if (comboCount >= 500) {
+            unlockAchievement('500_combos');
           }
         }
       }
