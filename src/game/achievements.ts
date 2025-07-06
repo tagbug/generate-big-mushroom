@@ -20,6 +20,19 @@ export const ALL_ACHIEVEMENTS: Achievement[] = [
     icon: '🏆',
   },
   {
+    id: 'reach_10000_score',
+    name: 'Score Legend',
+    description: 'Reach a score of 10,000.',
+    icon: '🌟',
+  },
+  {
+    id: 'reach_50000_score',
+    name: 'Score God',
+    description: 'Reach a score of 50,000.',
+    icon: '👑',
+    isSecret: true,
+  },
+  {
     id: 'unlock_watermelon',
     name: 'Fruit King',
     description: 'Successfully merge a Watermelon in Classic Fruits skin.',
@@ -71,4 +84,36 @@ export const ALL_ACHIEVEMENTS: Achievement[] = [
     icon: '🍄',
     isSecret: true,
   },
+  {
+    id: 'play_mania_mode',
+    name: 'Mania Mode Challenger',
+    description: 'Play in Mania Mode.',
+    icon: '⚡',
+  },
+  {
+    id: '50_combos',
+    name: 'Combo Enthusiast',
+    description: 'Achieve 50 combos in a single game.',
+    icon: '🔥',
+  },
+  {
+    id: '100_combos',
+    name: 'Combo Master',
+    description: 'Achieve 100 combos in a single game.',
+    icon: '💥',
+  },
+  {
+    id: '500_combos',
+    name: 'Combo Legend',
+    description: 'Achieve 500 combos in a single game.',
+    icon: '🌪️',
+    isSecret: true,
+  },
+  {
+    id: 'merge_biggest',
+    name: 'Void',
+    description: 'Merge the biggest item in the game.',
+    icon: '🌌',
+    isSecret: true,
+  }
 ];

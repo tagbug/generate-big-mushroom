@@ -129,13 +129,23 @@
       },
       {
         "id": "reach_1000_score",
-        "name": "一千分！",
+        "name": "初学者",
         "description": "在一局游戏中达到1000分"
       },
       {
         "id": "reach_5000_score",
-        "name": "五千分！",
+        "name": "勇往直前",
         "description": "在一局游戏中达到5000分"
+      },
+      {
+        "id": "reach_10000_score",
+        "name": "突破极限",
+        "description": "在一局游戏中达到10000分"
+      },
+      {
+        "id": "reach_50000_score",
+        "name": "这是人能做的到的吗？？",
+        "description": "在一局游戏中达到50000分"
       },
       {
         "id": "unlock_watermelon",
@@ -176,6 +186,31 @@
         "id": "unlock_small_mushroom",
         "name": "小小的菇！",
         "description": "你发现了小小蘑菇！"
+      },
+      {
+        "id": "play_mania_mode",
+        "name": "新领域",
+        "description": "尝试狂热模式"
+      },
+      {
+        "id": "50_combos",
+        "name": "Combo！",
+        "description": "在一局游戏中达到50个连击"
+      },
+      {
+        "id": "100_combos",
+        "name": "更多的Combo！",
+        "description": "在一局游戏中达到100个连击"
+      },
+      {
+        "id": "500_combos",
+        "name": "孩子你无敌了",
+        "description": "在一局游戏中达到500个连击"
+      },
+      {
+        "id": "merge_biggest",
+        "name": "虚无",
+        "description": "消灭游戏中最大的物品"
       }
     ]
   }
