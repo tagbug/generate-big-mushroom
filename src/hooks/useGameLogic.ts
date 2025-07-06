@@ -219,7 +219,7 @@ export const useGameLogic = (sceneRef: React.RefObject<HTMLDivElement | null>) =
       return;
     }
   
-    const decayInterval = 100 + (3000 - 100) * Math.exp(-0.1 * (comboCount - 1));
+    const decayInterval = 50 + (3000 - 50) * Math.exp(-0.05 * (comboCount - 1));
     setTimeToDecay(decayInterval);
   
     comboDecayTimeoutRef.current = setTimeout(() => {

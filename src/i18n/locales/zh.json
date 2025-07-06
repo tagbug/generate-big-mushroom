@@ -51,6 +51,38 @@
         ]
       },
       {
+        "id": "small-mushroom",
+        "name": "小蘑菇",
+        "desc": "小小的蘑菇！",
+        "items": [
+          {"label": "candy", "name": "糖果" },
+          { "label": "cookie", "name": "饼干" },
+          { "label": "donut", "name": "甜甜圈" },
+          { "label": "shrimp", "name": "天妇罗" },
+          { "label": "fish_cake", "name": "鱼板" },
+          { "label": "pride_flag", "name": "彩虹" },
+          { "label": "trans_flag", "name": "跨子" },
+          { "label": "brown_mushroom", "name": "小蘑菇" },
+          { "label": "red_mushroom", "name": "小小蘑菇" }
+        ]
+      },
+      {
+        "id": "octopus",
+        "name": "章鱼",
+        "desc": "合成大章鱼！",
+        "items": [
+          { "label": "brown_mushroom", "name": "小蘑菇" },
+          { "label": "red_mushroom", "name": "大蘑菇" },
+          { "label": "egg", "name": "鸡蛋" },
+          { "label": "fried_egg", "name": "煎蛋" },
+          { "label": "bacon", "name": "培根" },
+          { "label": "pork", "name": "猪肉" },
+          { "label": "jellyfish", "name": "水母" },
+          { "label": "squid", "name": "鱿鱼" },
+          { "label": "octopus", "name": "章鱼" }
+        ]
+      },
+      {
         "id": "classic-fruits",
         "name": "水果",
         "desc": "传统的水果合成游戏",
@@ -102,22 +134,6 @@
           { "label": "star", "name": "星星" },
           { "label": "galaxy", "name": "银河" },
           { "label": "universe", "name": "宇宙" }
-        ]
-      },
-      {
-        "id": "small-mushroom",
-        "name": "小蘑菇",
-        "desc": "小小的蘑菇！",
-        "items": [
-          {"label": "candy", "name": "糖果" },
-          { "label": "cookie", "name": "饼干" },
-          { "label": "donut", "name": "甜甜圈" },
-          { "label": "shrimp", "name": "天妇罗" },
-          { "label": "fish_cake", "name": "鱼板" },
-          { "label": "pride_flag", "name": "彩虹" },
-          { "label": "trans_flag", "name": "跨子" },
-          { "label": "brown_mushroom", "name": "小蘑菇" },
-          { "label": "red_mushroom", "name": "小小蘑菇" }
         ]
       }
     ],
@@ -179,13 +195,18 @@
       },
       {
         "id": "8_mushrooms",
-        "name": "蘑菇之王",
+        "name": "蘑菇之王！",
         "description": "在一局游戏中合成8只大蘑菇！"
       },
       {
         "id": "unlock_small_mushroom",
         "name": "小小的菇！",
         "description": "你发现了小小蘑菇！"
+      },
+      {
+        "id": "unlock_octopus",
+        "name": "章鱼出现了！",
+        "description": "你发现了大章鱼！"
       },
       {
         "id": "play_mania_mode",

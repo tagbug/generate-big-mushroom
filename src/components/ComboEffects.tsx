@@ -16,9 +16,12 @@ const ComboEffects: React.FC<ComboEffectsProps> = ({ comboCount, onComboIncrease
     if (comboCount > prevComboCountRef.current) {
       onComboIncrease?.(comboCount);
       
+      if (comboCount <= 10) return; // 仅在combo大于10时触发效果
+      const fixedComboCount = comboCount - 10;
+      
       // 屏幕震动效果 - 应用到整个页面body
-      const intensity = Math.min(comboCount * 0.5, 10);
-      const duration = Math.max(0.3, Math.min(comboCount * 0.1, 1));
+      const intensity = Math.min(fixedComboCount * 0.1, 2);
+      const duration = Math.max(0.1, Math.min(fixedComboCount * 0.05, 0.5));
       
       // 生成唯一的动画ID和随机化的关键帧
       const animationId = ++animationIdRef.current;

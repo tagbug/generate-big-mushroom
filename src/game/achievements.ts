@@ -85,6 +85,13 @@ export const ALL_ACHIEVEMENTS: Achievement[] = [
     isSecret: true,
   },
   {
+    id: 'unlock_octopus',
+    name: 'Octopus Adventurer',
+    description: 'You found the big octopus!',
+    icon: '🐙',
+    isSecret: true,
+  },
+  {
     id: 'play_mania_mode',
     name: 'Mania Mode Challenger',
     description: 'Play in Mania Mode.',

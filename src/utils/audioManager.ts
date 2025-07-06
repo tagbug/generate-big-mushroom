@@ -156,7 +156,7 @@ class AudioManager {
 
     // 根据combo数量调整音效
     const baseFrequencies = [523, 659, 784];
-    const pitchMultiplier = 1 + Math.min(comboCount * 0.1, 1.25); // 最高提升1.25倍音调
+    const pitchMultiplier = 1 + Math.min(Math.floor(comboCount / 3) * 0.1, 0.5); // 最高提升0.5倍音调
     const frequencies = baseFrequencies.map(f => f * pitchMultiplier);
     
     // 持续时间随combo减少，变得更急促
@@ -164,8 +164,8 @@ class AudioManager {
     const duration = Math.max(baseDuration - comboCount * 0.01, 0.15);
     
     // 音量随combo增加
-    const baseVolume = 0.15;
-    const volume = Math.min(baseVolume + comboCount * 0.01, 0.3);
+    const baseVolume = 0.2;
+    const volume = Math.min(baseVolume + comboCount * 0.05, 0.5);
     
     this.playChord(frequencies, duration, volume);
   }

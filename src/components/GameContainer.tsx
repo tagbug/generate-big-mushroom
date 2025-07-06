@@ -155,7 +155,7 @@ const GameContainer = () => {
         <ComboMeter 
           comboCount={comboCount} 
           timeToDecay={timeToDecay}
-          maxTime={100 + (3000 - 100) * Math.exp(-0.1 * (comboCount - 1))}
+          maxTime={75 + (3000 - 50) * Math.exp(-0.05 * comboCount)}
         />
       )}
       

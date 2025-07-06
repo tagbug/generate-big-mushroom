@@ -51,6 +51,38 @@
         ]
       },
       {
+        "id": "small-mushroom",
+        "name": "Small Mushrooms",
+        "desc": "Merge small mushrooms!",
+        "items": [
+          { "label": "candy", "name": "Candy" },
+          { "label": "cookie", "name": "Cookie" },
+          { "label": "donut", "name": "Donut" },
+          { "label": "shrimp", "name": "Shrimp" },
+          { "label": "fish_cake", "name": "Fish Cake" },
+          { "label": "pride_flag", "name": "Pride Flag" },
+          { "label": "trans_flag", "name": "Trans Flag" },
+          { "label": "brown_mushroom", "name": "Small Brown Mushroom" },
+          { "label": "red_mushroom", "name": "Small Red Mushroom" }
+        ]
+      },
+      {
+        "id": "octopus",
+        "name": "Octopus",
+        "desc": "Merge big octopuses!",
+        "items": [
+          { "label": "brown_mushroom", "name": "Small Brown Mushroom" },
+          { "label": "red_mushroom", "name": "Large Red Mushroom" },
+          { "label": "egg", "name": "Egg" },
+          { "label": "fried_egg", "name": "Fried Egg" },
+          { "label": "bacon", "name": "Bacon" },
+          { "label": "pork", "name": "Pork" },
+          { "label": "jellyfish", "name": "Jellyfish" },
+          { "label": "squid", "name": "Squid" },
+          { "label": "octopus", "name": "Octopus" }
+        ]
+      },
+      {
         "id": "classic-fruits",
         "name": "Classic Fruits",
         "desc": "Traditional fruit merging game",
@@ -102,22 +134,6 @@
           { "label": "star", "name": "Star" },
           { "label": "galaxy", "name": "Galaxy" },
           { "label": "universe", "name": "Universe" }
-        ]
-      },
-      {
-        "id": "small-mushroom",
-        "name": "Small Mushrooms",
-        "desc": "Merge small mushrooms!",
-        "items": [
-          { "label": "candy", "name": "Candy" },
-          { "label": "cookie", "name": "Cookie" },
-          { "label": "donut", "name": "Donut" },
-          { "label": "shrimp", "name": "Shrimp" },
-          { "label": "fish_cake", "name": "Fish Cake" },
-          { "label": "pride_flag", "name": "Pride Flag" },
-          { "label": "trans_flag", "name": "Trans Flag" },
-          { "label": "brown_mushroom", "name": "Small Brown Mushroom" },
-          { "label": "red_mushroom", "name": "Small Red Mushroom" }
         ]
       }
     ],
@@ -191,6 +207,11 @@
         "id": "play_mania_mode",
         "name": "New Territory",
         "description": "Try out Mania Mode."
+      },
+      {
+        "id": "unlock_octopus",
+        "name": "Octopus Adventurer",
+        "description": "You found the big octopus!"
       },
       {
         "id": "50_combos",
